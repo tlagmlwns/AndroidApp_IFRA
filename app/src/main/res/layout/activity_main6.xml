@@ -93,32 +93,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.tabs.TabLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            app:tabIndicatorHeight="5dp">
+            android:orientation="horizontal">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/Tab_myinfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/myinfo"
-                android:text="나의정보" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="140dp"
+                android:layout_height="70dp"
+                app:tabIndicatorHeight="5dp">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/Tab_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/checklist"
-                android:text="나의상태" />
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/Tab_myinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:icon="@drawable/myinfo"
+                    android:text="나의정보"
+                    android:background="@color/cardview_light_background"/>
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/Tab_writing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/writing"
-                android:text="작성한글" />
-        </com.google.android.material.tabs.TabLayout>
+            </com.google.android.material.tabs.TabLayout>
+
+            <TextView
+                android:id="@+id/tv_blank5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/system_accent3_10" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 

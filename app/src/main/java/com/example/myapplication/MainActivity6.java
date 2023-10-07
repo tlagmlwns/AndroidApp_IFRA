@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity6 extends AppCompatActivity {
 
@@ -16,6 +19,7 @@ public class MainActivity6 extends AppCompatActivity {
 
         ImageButton ibtn_logout = findViewById(R.id.ibtn_logout);
         ImageButton ibtn_Back = findViewById(R.id.ibtn_Back);
+        //TableLayout tabLayout = findViewById(R.id.tabs);
         ibtn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,5 +33,7 @@ public class MainActivity6 extends AppCompatActivity {
                 finish(); // 현재 액티비티를 종료하고 이전 화면으로 돌아가기
             }
         });
+
+
     }
 }
