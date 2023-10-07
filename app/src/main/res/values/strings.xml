@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">IFRA</string>
+    <!--  신분증 얼굴 인식 어플리케이션 -->
+    <!--- ID card face recognition application-->
 </resources>
