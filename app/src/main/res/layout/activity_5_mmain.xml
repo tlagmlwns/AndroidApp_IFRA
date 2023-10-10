@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/ibtn_info"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:visibility="invisible"
