@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,15 +18,16 @@ import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity7 extends AppCompatActivity {
-    private ImageButton ulc_Mypage;
-    private ImageButton ulc_Back;
-    private CalendarView calendarview;
-    private TextView dateInfo;
+    ImageButton ulc_Mypage;
+    ImageButton ulc_Back;
+    CalendarView calendarview;
+    TextView dateInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_7_);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
+        setContentView(R.layout.activity_7_logcheck);
         //-------------------------------------------------
         ulc_Back = findViewById(R.id.ibtn_ulcBack);
         //-------------------------------------------------
