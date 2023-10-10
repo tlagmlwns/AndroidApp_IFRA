@@ -6,19 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TableLayout;
-
-import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity6 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main6);
+        setContentView(R.layout.activity_6_mypage);
 
         ImageButton ibtn_logout = findViewById(R.id.ibtn_logout);
-        ImageButton ibtn_Back = findViewById(R.id.ibtn_Back);
+        ImageButton ibtn_Back = findViewById(R.id.ibtn_ulcBack);
         //TableLayout tabLayout = findViewById(R.id.tabs);
         ibtn_logout.setOnClickListener(new View.OnClickListener() {
             @Override

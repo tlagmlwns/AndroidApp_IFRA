@@ -15,22 +15,22 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_2_login);
 
         TextView textlink = findViewById(R.id.link3);
         textlink.setOnClickListener(new View.OnClickListener() {//회원가입
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), MainActivity3.class);
-                startActivity(intent);
+                Intent jtm=new Intent(getApplicationContext(), MainActivity3.class);
+                startActivity(jtm);
             }
         });
         Button btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {//로그인시 메인페이지(임시)
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), MainActivity4.class);
-                startActivity(intent);
+                Intent main=new Intent(getApplicationContext(), MainActivity4.class);
+                startActivity(main);
             }
         });
     }

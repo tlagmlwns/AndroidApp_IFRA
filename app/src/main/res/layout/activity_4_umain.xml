@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity5">
+    tools:context=".MainActivity4">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -37,7 +37,7 @@
                 app:srcCompat="@drawable/call" />
 
             <TextView
-                android:id="@+id/tv_main5"
+                android:id="@+id/tv_main4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -58,10 +58,11 @@
                 app:srcCompat="@drawable/person" />
         </LinearLayout>
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="272dp"
-        android:layout_height="280dp"
-        android:layout_marginBottom="76dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="104dp"
         android:background="#DAD0D0"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,58 +73,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal"></LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
             android:orientation="horizontal"
             android:padding="5dp">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="120dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/group" />
-
-                <Button
-                    android:id="@+id/btn_Group"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:text="관리페이지" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/gongji" />
-
-            <Button
-                android:id="@+id/btn_Gongji"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:text="공지사항" />
         </LinearLayout>
 
         <LinearLayout
@@ -142,16 +94,38 @@
                     android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/free" />
+                    app:srcCompat="@drawable/checklist" />
 
                 <Button
-                    android:id="@+id/btn_Free"
+                    android:id="@+id/btn_lcuser"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="자유게시판" />
+                    android:text="로그 확인" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/what" />
+
+            <Button
+                android:id="@+id/btn_Inquiry"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="버그신고/문의" />
         </LinearLayout>
 
     </LinearLayout>
@@ -162,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:gravity="center"
-        android:text="관리자 님 환영합니다!"
+        android:text="사용자 님 환영합니다!"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,10 +146,11 @@
 
     <TextView
         android:id="@+id/tv_Time"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="148dp"
-        android:text="2023년 10월 3일"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
         android:textSize="30dp"
         android:textStyle="bold"

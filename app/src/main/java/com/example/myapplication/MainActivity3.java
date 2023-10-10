@@ -1,15 +1,12 @@
 package com.example.myapplication;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +34,7 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_3_jtm);
         imageView = findViewById(R.id.imageView2);
         ImageButton back = findViewById(R.id.ibtn_Backlog);
         Button certified = findViewById(R.id.btn_cer);
@@ -123,7 +120,7 @@ public class MainActivity3 extends AppCompatActivity {
     }
     public void showEditableDialog(final Context context, String title, String initialValue, final OnValueEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_editable, null);
+        View view = inflater.inflate(R.layout.activity_3_z_dialogedit, null);
         final EditText editTextValue = view.findViewById(R.id.editTextValue);
         editTextValue.setText(initialValue);
 
