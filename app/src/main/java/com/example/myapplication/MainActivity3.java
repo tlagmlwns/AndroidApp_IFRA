@@ -53,10 +53,7 @@ public class MainActivity3 extends AppCompatActivity {
     ImageView imageView;
     ImageButton back;
     Button certified;
-    String information;
     CheckBox checkBox;
-    Context context;
-    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +64,6 @@ public class MainActivity3 extends AppCompatActivity {
         back = findViewById(R.id.ibtn_Backlog);
         certified = findViewById(R.id.btn_cer);
         checkBox = findViewById(R.id.cb_MJ);
-        context = this;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("로딩 중...");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +137,7 @@ public class MainActivity3 extends AppCompatActivity {
     public void cer_takePicture() {
         Intent cer_takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cer_takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            cer_cameraLauncher.launch(cer_takePictureIntent);
+            showConfirmationDialog(MainActivity3.this, "인식 꿀팁!", "카메라 배율 x3배율로 설정하고 캡쳐하면 인식이 잘 됩니다.");
         }
     }
     public void showInfoDialog(Context context, String title, String message) {
@@ -168,6 +162,22 @@ public class MainActivity3 extends AppCompatActivity {
                     }
                 })
                 .show(); // 다이얼로그 표시
+    }
+    public void showConfirmationDialog(Context context, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent cer_takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (cer_takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
+                            cer_cameraLauncher.launch(cer_takePictureIntent);
+                        }
+                        dialog.dismiss(); // 다이얼로그를 닫습니다.
+                    }
+                })
+                .show(); // 다이얼로그를 표시합니다.
     }
     public void showEditableDialog(final Context context, String title, String initialValue, final OnValueEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -211,7 +221,7 @@ public class MainActivity3 extends AppCompatActivity {
     }
     private void Editing() {
         // 안내문자서 수정 클릭시
-        showEditableDialog(this, "수정하기", information, new OnValueEditedListener() {
+        showEditableDialog(this, "수정하기", ocr_result, new OnValueEditedListener() {
             @Override
             public void onValueEdited(String editedValue) {
                 // 사용자가 수정한 값을 사용합니다.
@@ -234,19 +244,16 @@ public class MainActivity3 extends AppCompatActivity {
                 .build();
 
         OkHttpClient client = new OkHttpClient();
-        progressDialog.show();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                progressDialog.dismiss();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String responseBody = response.body().string();
-                    progressDialog.dismiss();
 
                     try {
                         JSONObject json = new JSONObject(responseBody);
