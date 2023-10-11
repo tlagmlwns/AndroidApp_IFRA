@@ -1,15 +1,19 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,24 +32,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
-import java.util.Stack;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import okhttp3.*;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+import org.json.JSONObject;
 
 public class MainActivity3 extends AppCompatActivity {
+    Single_ton_data mydata = Single_ton_data.getInstance();
+    String directoryPath;
+    File directory;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> cer_cameraLauncher;
+    private String ocr_result;
     ImageView imageView;
+    ImageButton back;
+    Button certified;
     String information;
     CheckBox checkBox;
+    Context context;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
         setContentView(R.layout.activity_3_jtm);
+
         imageView = findViewById(R.id.imageView2);
-        ImageButton back = findViewById(R.id.ibtn_Backlog);
-        Button certified = findViewById(R.id.btn_cer);
+        back = findViewById(R.id.ibtn_Backlog);
+        certified = findViewById(R.id.btn_cer);
         checkBox = findViewById(R.id.cb_MJ);
+        context = this;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("로딩 중...");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,10 +104,32 @@ public class MainActivity3 extends AppCompatActivity {
                         if (result.getResultCode() == RESULT_OK) {
                             Bundle extras = result.getData().getExtras();
                             Bitmap imageBitmap = (Bitmap) extras.get("data");
-                            //사진ocr하는곳으로 보내기 구현??
-                            information = "테스트 123 나오면 확인버튼 클릭";
-                            showInfoDialog(MainActivity3.this, "정보 확인", information);
+                            directoryPath = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
+                            directory = new File(directoryPath);
 
+                            if (!directory.exists()) {
+                                if (!directory.mkdirs()) {
+                                    Log.e("Directory Creation Error", "Failed to create directory.");
+                                }
+                            }
+
+                            // 이미지를 파일로 저장
+                            File internalFile = new File(directory, "my_image.jpg");
+                            try {
+                                FileOutputStream fos = new FileOutputStream(internalFile);
+                                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                                fos.flush();
+                                fos.close();
+                                Log.e("image storage", "Success: " + internalFile.getAbsolutePath());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("image storage", "Fail: " + e.getMessage());
+                            }
+
+                            // 서버로 이미지를 업로드
+                            send2Server(internalFile);
+                            //information = ocr_result;
+                            //showInfoDialog(MainActivity3.this, "정보 확인", information);
                         }
                     }
                 });
@@ -174,6 +220,59 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
     }
-    //------------------------------------------------------------------------------------------------------------------------------
+    public void send2Server(File file) {
+        MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", file.getName(), RequestBody.create(MEDIA_TYPE, file))
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://15.164.120.162:5000/ocr_test")
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        progressDialog.show();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    progressDialog.dismiss();
+
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+
+                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
+                        String status = json.getString("status");
+                        String result = json.getString("result");
+
+                        Log.d("JSON Response: ", "status: " + status);
+                        Log.d("JSON Response: ", "result: " + result);
+                        ocr_result = result;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showInfoDialog(MainActivity3.this, "서버에서 받은 데이터", ocr_result);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
+            }
+        });
+    }
 
 }
