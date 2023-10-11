@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -25,13 +28,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
+import java.util.Stack;
+
 public class MainActivity3 extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> cer_cameraLauncher;
-    private ImageView imageView;
-    private String information;
-    private CheckBox checkBox;
+    ImageView imageView;
+    String information;
+    CheckBox checkBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +113,7 @@ public class MainActivity3 extends AppCompatActivity {
                 })
                 .setNeutralButton("수정", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Editing();
-                    }
+                    public void onClick(DialogInterface dialog, int which) { Editing();}
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
@@ -139,6 +142,7 @@ public class MainActivity3 extends AppCompatActivity {
                         if (listener != null) {
                             listener.onValueEdited(editedValue);
                         }
+                        Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
                         checkBox.setChecked(true);
                     }
                 })
@@ -151,10 +155,12 @@ public class MainActivity3 extends AppCompatActivity {
     private void Confirmation() {
         // 안내문자서 확인 클릭시
         // 예: 다음 화면으로 이동, 데이터 저장, 기타 작업 수행
+        Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
         checkBox.setChecked(true);
     }
     private void Cancellation() {
         // 안내문자서 취소 클릭시
+        Toast.makeText(getApplicationContext(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
         checkBox.setChecked(false);
     }
     private void Editing() {
