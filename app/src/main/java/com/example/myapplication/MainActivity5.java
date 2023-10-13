@@ -17,8 +17,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity5 extends AppCompatActivity {
-    ImageButton mm_Mypage;
-    Button Logcheck;
+    ImageButton mm_Mypage; //mm_Mypage : Manager Main -> Mypage
+    Button mm_Logcheck; //mm_Logcheck : Manager Main -> Logcheck
     Button Manage;
     CountDownTimer countDownTimer;
     TextView timeTextView;
@@ -29,7 +29,7 @@ public class MainActivity5 extends AppCompatActivity {
         setContentView(R.layout.activity_5_mmain);
 
         mm_Mypage = findViewById(R.id.ibtn_mypage);
-        Logcheck = findViewById(R.id.btn_lcmanager);
+        mm_Logcheck = findViewById(R.id.btn_lcmanager);
         Manage = findViewById(R.id.btn_Manage);
         timeTextView = findViewById(R.id.tv_Time);
         mm_Mypage.setOnClickListener(new View.OnClickListener() { //마이페이지 바로가기
@@ -39,7 +39,7 @@ public class MainActivity5 extends AppCompatActivity {
                 startActivity(mmmypage);
             }
         });
-        Logcheck.setOnClickListener(new View.OnClickListener() {
+        mm_Logcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent logcheck=new Intent(getApplicationContext(), MainActivity7.class);
@@ -49,7 +49,9 @@ public class MainActivity5 extends AppCompatActivity {
         Manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent manager=new Intent(getApplicationContext(), MainActivity8.class);
                 Toast.makeText(getApplicationContext(), "준비 중 입니다.", Toast.LENGTH_SHORT).show();
+                startActivity(manager);
             }
         });
         countDownTimer = new CountDownTimer(Long.MAX_VALUE, 1000) { //메인페이지 현재날짜띄우기

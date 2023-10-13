@@ -17,11 +17,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity4 extends AppCompatActivity {
-    private ImageButton um_Mypage;
-    private Button Logcheck;
-    private Button Inquiry;
-    private CountDownTimer countDownTimer;
-    private TextView timeTextView;
+    ImageButton um_Mypage; //um_Mypage : User Main -> Mypage
+    Button um_Logcheck; //um_Logcheck : User Main -> Logcheck
+    Button Inquiry;
+    CountDownTimer countDownTimer;
+    TextView timeTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,7 @@ public class MainActivity4 extends AppCompatActivity {
         setContentView(R.layout.activity_4_umain);
 
         um_Mypage = findViewById(R.id.ibtn_mypage);
-        Logcheck = findViewById(R.id.btn_lcuser);
+        um_Logcheck = findViewById(R.id.btn_lcuser);
         Inquiry = findViewById(R.id.btn_Inquiry);
         timeTextView = findViewById(R.id.tv_Time);
         um_Mypage.setOnClickListener(new View.OnClickListener() { //마이페이지 바로가기
@@ -39,7 +39,7 @@ public class MainActivity4 extends AppCompatActivity {
                 startActivity(ummypage);
             }
         });
-        Logcheck.setOnClickListener(new View.OnClickListener() {
+        um_Logcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent logcheck=new Intent(getApplicationContext(), MainActivity7.class);
