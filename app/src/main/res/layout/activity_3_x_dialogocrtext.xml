@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -20,13 +20,11 @@
             android:textColor="#919191"
             android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/etv_ocrresult_name"
+        <TextView
+            android:id="@+id/tv_ocrresult_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_height="match_parent"
             android:hint="name"
-            android:inputType="text"
             android:paddingLeft="5dp"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -40,7 +38,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -52,13 +50,11 @@
             android:textColor="#919191"
             android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/etv_ocrresult_num"
+        <TextView
+            android:id="@+id/tv_ocrresult_Num"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="num6-num7"
-            android:inputType="text"
+            android:layout_height="match_parent"
+            android:hint="number6-number7"
             android:paddingLeft="5dp"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -74,12 +70,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="70dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -92,13 +88,11 @@
                 android:textColor="#919191"
                 android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/etv_ocrresult_gender"
+            <TextView
+                android:id="@+id/tv_ocrresult_mw"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="남성 or 여성"
-                android:inputType="text"
+                android:layout_height="match_parent"
+                android:hint="남/여"
                 android:paddingLeft="5dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -107,7 +101,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -120,17 +114,14 @@
                 android:textColor="#919191"
                 android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/etv_ocrresult_ca"
+            <TextView
+                android:id="@+id/tv_ocrresult_ca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="c_a"
-                android:inputType="text"
+                android:layout_height="match_parent"
+                android:hint="인증기관"
                 android:paddingLeft="5dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
-
         </LinearLayout>
     </LinearLayout>
 
