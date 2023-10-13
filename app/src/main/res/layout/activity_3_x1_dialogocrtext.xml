@@ -55,7 +55,7 @@
                 android:id="@+id/tv_ocrresult_mw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="남/여"
+                android:hint="gender"
                 android:paddingLeft="5dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -124,7 +124,7 @@
                 android:id="@+id/tv_ocrresult_ca"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="인증기관"
+                android:hint="institution"
                 android:paddingLeft="5dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
