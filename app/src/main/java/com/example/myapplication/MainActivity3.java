@@ -1,26 +1,25 @@
 package com.example.myapplication;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -35,6 +34,8 @@ import androidx.core.app.ActivityCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.*;
 import okhttp3.Request;
@@ -54,6 +55,10 @@ public class MainActivity3 extends AppCompatActivity {
     ImageButton back;
     Button certified;
     CheckBox checkBox;
+    String name;
+    String idNumber;
+    String gender;
+    String institution;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,10 +142,14 @@ public class MainActivity3 extends AppCompatActivity {
     public void cer_takePicture() {
         Intent cer_takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cer_takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            showConfirmationDialog(MainActivity3.this, "인식 꿀팁!", "카메라 배율 x3배율로 설정하고 캡쳐하면 인식이 잘 됩니다.");
+            showConfirmationDialog(MainActivity3.this, "부탁드립니다.", "현재 워터마크로 인하여 기술 부족으로 캡쳐시 배율을 높게하여 캡쳐하시기 바랍니다.");
         }
     }
-    public void showInfoDialog(Context context, String title, String message) {
+    /*
+    public void showInfoDialog(Context context, String title, String message) { //v1
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View viewX = inflater.inflate(R.layout.activity_3_x_dialogocrtext, null);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title)
                 .setMessage(message)
@@ -154,6 +163,44 @@ public class MainActivity3 extends AppCompatActivity {
                 .setNeutralButton("수정", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) { Editing();}
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Cancellation();
+                    }
+                })
+                .show(); // 다이얼로그 표시
+    }*/
+    public void showInfoDialog(Context context, String name, String idNumber, String gender, String institution) { //v2
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View viewX = inflater.inflate(R.layout.activity_3_x_dialogocrtext, null);
+
+        TextView tvName = viewX.findViewById(R.id.tv_ocrresult_name);
+        TextView tvIdNumber = viewX.findViewById(R.id.tv_ocrresult_Num);
+        TextView tvGender = viewX.findViewById(R.id.tv_ocrresult_mw);
+        TextView tvInstitution = viewX.findViewById(R.id.tv_ocrresult_ca);
+
+        tvName.setText(name);
+        tvIdNumber.setText(idNumber);
+        tvGender.setText(gender);
+        tvInstitution.setText(institution);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder
+                .setView(viewX) // 이 부분을 수정하여 커스텀 뷰를 설정합니다.
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 사용자가 확인 버튼을 눌렀을 때 수행할 동작을 여기에 추가
+                        Confirmation();
+                    }
+                })
+                .setNeutralButton("수정", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Editing();
+                    }
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
@@ -179,24 +226,25 @@ public class MainActivity3 extends AppCompatActivity {
                 })
                 .show(); // 다이얼로그를 표시합니다.
     }
+    /*
     public void showEditableDialog(final Context context, String title, String initialValue, final OnValueEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.activity_3_z_dialogedit, null);
-        final EditText editTextValue = view.findViewById(R.id.editTextValue);
-        editTextValue.setText(initialValue);
+        View viewZ = inflater.inflate(R.layout.activity_3_z_dialogedit, null);
+        //inal EditText editTextValue = viewZ.findViewById(R.id.editTextValue);
+        //editTextValue.setText(initialValue);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(view)
+        builder.setView(viewZ)
                 .setTitle(title)
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 사용자가 입력한 값을 가져옵니다.
-                        String editedValue = editTextValue.getText().toString();
+                        //String editedValue = editTextValue.getText().toString();
 
                         // 리스너를 통해 수정된 값을 전달합니다.
                         if (listener != null) {
-                            listener.onValueEdited(editedValue);
+                            //listener.onValueEdited(editedValue);
                         }
                         Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
                         checkBox.setChecked(true);
@@ -204,9 +252,51 @@ public class MainActivity3 extends AppCompatActivity {
                 })
                 .setNegativeButton("취소", null) // 취소 버튼 설정
                 .show(); // 다이얼로그 표시
+    }*/
+    public void showEditableDialog(final Context context, String title, String name, String idNumber, //v2
+                                   String gender, String institution, final OnValuesEditedListener listener) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View viewZ = inflater.inflate(R.layout.activity_3_z_dialogedit, null);
+        EditText etName = viewZ.findViewById(R.id.etv_ocrresult_name);
+        EditText etIdNumber = viewZ.findViewById(R.id.etv_ocrresult_num);
+        EditText etGender = viewZ.findViewById(R.id.etv_ocrresult_gender);
+        EditText etInstitution = viewZ.findViewById(R.id.etv_ocrresult_ca);
+
+        etName.setText(name);
+        etIdNumber.setText(idNumber);
+        etGender.setText(gender);
+        etInstitution.setText(institution);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(viewZ)
+                .setTitle(title)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 사용자가 수정한 값을 가져옵니다.
+                        String editedName = etName.getText().toString();
+                        String editedIdNumber = etIdNumber.getText().toString();
+                        String editedGender = etGender.getText().toString();
+                        String editedInstitution = etInstitution.getText().toString();
+
+                        // 리스너를 통해 수정된 값을 전달합니다.
+                        if (listener != null) {
+                            listener.onValuesEdited(editedName, editedIdNumber, editedGender, editedInstitution);
+                        }
+                        Toast.makeText(context, "완료하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "취소하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show(); // 다이얼로그 표시
     }
-    public interface OnValueEditedListener {
-        void onValueEdited(String editedValue);
+    private int mapGenderToPosition(String gender) { return 0;}
+    public interface OnValuesEditedListener {
+        void onValuesEdited(String editedName, String editedIdNumber, String editedGender, String editedInstitution);
     }
     private void Confirmation() {
         // 안내문자서 확인 클릭시
@@ -221,16 +311,21 @@ public class MainActivity3 extends AppCompatActivity {
     }
     private void Editing() {
         // 안내문자서 수정 클릭시
-        showEditableDialog(this, "수정하기", ocr_result, new OnValueEditedListener() {
-            @Override
-            public void onValueEdited(String editedValue) {
-                // 사용자가 수정한 값을 사용합니다.
-                // editedValue 변수에 수정된 값이 들어있습니다.
-                // 이곳에서 수정된 값을 사용하거나 처리할 수 있습니다.
-            }
-        });
+        showEditableDialog(this, "수정하기",
+                name, idNumber, gender, institution,
+                new OnValuesEditedListener() {
+                    @Override
+                    public void onValuesEdited(String editedName, String editedIdNumber, String editedGender, String editedInstitution) {
+                        // 사용자가 수정한 값을 사용
+                        // 이곳에서 수정된 값을 사용하거나 처리
+                        // editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
+                        // 이 값을 원하는 곳에 적용하거나 저장
+                        // 예시로 수정된 이름을 Toast 메시지로 출력하는 예시:
+                        Toast.makeText(MainActivity3.this, "수정완료 ", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-    public void send2Server(File file) {
+    public void send2Server(File file) { // 서버로 보내기
         MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -249,7 +344,6 @@ public class MainActivity3 extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
@@ -268,7 +362,8 @@ public class MainActivity3 extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                showInfoDialog(MainActivity3.this, "서버에서 받은 데이터", ocr_result);
+                                filteringData(ocr_result); //데이터 필터링
+                                //showInfoDialog(MainActivity3.this,ocr_result);
                             }
                         });
                     } catch (Exception e) {
@@ -280,6 +375,31 @@ public class MainActivity3 extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void filteringData(String result){
+        //String ocrResult = "주민등록증\n홍길동(빠좀께)\n800101-2345678\n세울특별시 가산디지털1로\n서울특별시 금천구청장";
+        String ocrResult = result;
+
+        // 이름 추출
+        Pattern name_Pattern = Pattern.compile("(.+)\\(");
+        Matcher name_Matcher = name_Pattern.matcher(ocrResult);
+        name = "이름을 찾을 수 없음";
+        if (name_Matcher.find()) { name = name_Matcher.group(1);}
+
+        // 주민번호 추출
+        Pattern id_Pattern = Pattern.compile("(\\d{6}-\\d{7})");
+        Matcher id_Matcher = id_Pattern.matcher(ocrResult);
+        idNumber = id_Matcher.find() ? id_Matcher.group() : "주민번호를 찾을 수 없음";
+
+        // 성별 추출
+        int gender_Digit = Integer.parseInt(idNumber.substring(7, 8));
+        gender = (gender_Digit % 2 == 1) ? "남성" : "여성";
+
+        // 기관 추출
+        String[] words = ocrResult.split("\\s+");
+        institution = words[words.length - 2] +" "+ words[words.length - 1];// 마지막 단어를 추출
+
+        showInfoDialog(this, name, idNumber, gender, institution);
     }
 
 }
