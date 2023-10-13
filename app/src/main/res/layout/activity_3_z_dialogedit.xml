@@ -9,28 +9,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_ocr_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:paddingLeft="5dp"
-            android:text="이름"
-            android:textColor="#919191"
-            android:textSize="15dp" />
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etv_ocrresult_name"
+            <TextView
+                android:id="@+id/tv_ocr_name"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:text="이름"
+                android:textColor="#919191"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/etv_ocrresult_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="name"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="name"
-            android:inputType="text"
-            android:paddingLeft="5dp"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_ocr_mw"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:text="성별"
+                android:textColor="#919191"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/etv_ocrresult_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="남성 or 여성"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -76,34 +110,6 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_ocr_mw"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="5dp"
-                android:text="성별"
-                android:textColor="#919191"
-                android:textSize="15dp" />
-
-            <EditText
-                android:id="@+id/etv_ocrresult_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="남성 or 여성"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
