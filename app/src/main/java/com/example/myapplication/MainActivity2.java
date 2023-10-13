@@ -44,7 +44,7 @@ public class MainActivity2 extends AppCompatActivity {
         Sign_up.setOnClickListener(new View.OnClickListener() {//회원가입
             @Override
             public void onClick(View view) {
-                Intent jtm=new Intent(getApplicationContext(), MainActivity3.class);
+                Intent jtm = new Intent(getApplicationContext(), MainActivity3.class);
                 startActivity(jtm);
             }
         });
@@ -52,7 +52,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String uid = id.getText().toString();
-                String upw=pw.getText().toString();
+                String upw = pw.getText().toString();
                 url_request(uid,upw);
             }
         });
@@ -124,6 +124,7 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // 요청이 실패한 경우 처리
+                        Toast.makeText(getApplicationContext(), "통신 실패! 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }
