@@ -61,15 +61,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="630dp"
+        android:layout_height="600dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.372">
+        app:layout_constraintVertical_bias="0.456">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +112,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
@@ -125,9 +126,9 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:srcCompat="@drawable/menjong"
                 android:padding="5dp"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/menjong" />
 
             <Button
                 android:id="@+id/btn_cer"
@@ -142,13 +143,13 @@
             <CheckBox
                 android:id="@+id/cb_MJ"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
@@ -158,73 +159,28 @@
 
             <ImageButton
                 android:id="@+id/icon_Call"
-                android:layout_width="60dp"
+                android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:srcCompat="@drawable/call"
                 android:padding="5dp"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/call" />
 
             <EditText
                 android:id="@+id/PhoneNum"
-                android:layout_width="240dp"
+                android:layout_width="315dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="PhoneNum"
                 android:inputType="text" />
 
-            <Button
-                android:id="@+id/btn_check"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:text="전송"
-                android:textSize="14sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:orientation="horizontal"></LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/icon_call2"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                app:srcCompat="@android:drawable/ic_menu_call" />
-
-            <EditText
-                android:id="@+id/CorrectNum"
-                android:layout_width="240dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="123456"
-                android:inputType="text" />
-
-            <Button
-                android:id="@+id/btn_send_check"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:text="인증"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
@@ -253,17 +209,17 @@
 
             <Button
                 android:id="@+id/btn_overlap"
-                android:layout_width="wrap_content"
+                android:layout_width="85dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="중복"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
@@ -273,13 +229,13 @@
 
             <ImageButton
                 android:id="@+id/icon_Pw"
-                android:layout_width="50dp"
+                android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:srcCompat="@drawable/pww"
                 android:padding="5dp"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/pww" />
 
             <EditText
                 android:id="@+id/etv_pw"
@@ -293,18 +249,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:orientation="horizontal"></LinearLayout>
-        </LinearLayout>
+            android:layout_height="20dp"
+            android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="20dp"
             android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
