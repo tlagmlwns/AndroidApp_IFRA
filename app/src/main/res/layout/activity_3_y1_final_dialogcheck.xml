@@ -6,6 +6,18 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/tv_fd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="최종 정보 확인"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:orientation="horizontal"></LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -27,7 +39,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/tv_finalresult_ID"
+                android:id="@+id/tv_final_result_ID"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="id"
@@ -89,7 +101,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/tv_final_result_name"
+                android:id="@+id/tv_final_result_Name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="name"
@@ -114,7 +126,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/tv_final_result_mw"
+                android:id="@+id/tv_final_result_Gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="gender"
@@ -175,7 +187,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_final_result_Num"
+            android:id="@+id/tv_final_result_INum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="num6-num7"
@@ -213,7 +225,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/tv_final_result_ca"
+                android:id="@+id/tv_final_result_Ins"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="institution"
