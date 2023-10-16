@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,11 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +39,6 @@ import okhttp3.*;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity3 extends AppCompatActivity {
@@ -89,7 +82,7 @@ public class MainActivity3 extends AppCompatActivity {
         });
         certified.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { cer_takePicture();}
+            public void onClick(View view) {cer_takePicture();}
         });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +132,7 @@ public class MainActivity3 extends AppCompatActivity {
                         }
                     }
                 });
+
         //ocr카메라
         cer_cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -168,6 +162,7 @@ public class MainActivity3 extends AppCompatActivity {
                                 e.printStackTrace();
                                 Log.e("image storage", "Fail: " + e.getMessage());
                             }
+
 
                             // 서버로 이미지를 업로드
                             send2Server(internalFile);
@@ -290,7 +285,7 @@ public class MainActivity3 extends AppCompatActivity {
         TextView tvPw = viewY1.findViewById(R.id.tv_final_result_PW);
         TextView tvName = viewY1.findViewById(R.id.tv_final_result_Name);
         TextView tvGender = viewY1.findViewById(R.id.tv_final_result_Gender);
-        TextView tvPNum = viewY1.findViewById(R.id.tv_final_result_PNum);
+        TextView tvPNum = viewY1.findViewById(R.id.tv_mypage_rName);
         TextView tvINum = viewY1.findViewById(R.id.tv_final_result_INum);
         TextView tvIns = viewY1.findViewById(R.id.tv_final_result_Ins);
 
@@ -467,6 +462,7 @@ public class MainActivity3 extends AppCompatActivity {
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Toast.makeText(MainActivity3.this, "인식오류! 다시 캡쳐해주세요. ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // 응답이 성공적이지 않은 경우에 대한 처리
@@ -498,11 +494,16 @@ public class MainActivity3 extends AppCompatActivity {
         String[] words = ocrResult.split("\\s+");
         institution = words[words.length - 2] +" "+ words[words.length - 1];// 마지막 단어를 추출
 
-        if(name.equals("이름 미확인") || idNumber.equals("주민번호 미확인")){
+        //오류
+        char targetChar = '(';
+        if (institution.startsWith(String.valueOf(targetChar))) {
+            Toast.makeText(MainActivity3.this, "인식이 안되었습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity3.this, "다시 캡쳐해주세요.", Toast.LENGTH_SHORT).show();
+        } else if(name.equals("이름 미확인") || idNumber.equals("주민번호 미확인")){
             Toast.makeText(MainActivity3.this, "인식이 안되었습니다.", Toast.LENGTH_SHORT).show();
             Toast.makeText(MainActivity3.this, "다시 캡쳐해주세요.", Toast.LENGTH_SHORT).show();
         }
-        else{ showInfoDialog(this, name, idNumber, gender, institution);}
+        else {showInfoDialog(this, name, idNumber, gender, institution);}
     }
     public void Sign_in(File file) { // 서버로 보내기
         MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
