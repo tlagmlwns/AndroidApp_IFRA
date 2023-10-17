@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +17,31 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabItem;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MainActivity6 extends AppCompatActivity {
 
     ImageButton ibtn_logout;
     ImageButton ibtn_Back;
     Button edit_Mypageinfo;
+    TabItem Tab_myinfo;
     TextView tv_name, tv_id, tv_pw, tv_grp, tv_pnum;
     String name, id, pw, grp, pnum;
+    String server_Result;
 
 
     @Override
@@ -35,6 +54,7 @@ public class MainActivity6 extends AppCompatActivity {
         ibtn_Back = findViewById(R.id.ibtn_ulcBack);
         //TableLayout tabLayout = findViewById(R.id.tabs);
         edit_Mypageinfo = findViewById(R.id.btn_mypage_edit);
+        Tab_myinfo = findViewById(R.id.Tab_myinfo);
         ibtn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,15 +68,22 @@ public class MainActivity6 extends AppCompatActivity {
                 finish(); // 현재 액티비티를 종료하고 이전 화면으로 돌아가기
             }
         });
+        if (Tab_myinfo != null) {
+            Tab_myinfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "새로고침 완료", Toast.LENGTH_SHORT).show();
+                    // 이곳에 클릭 이벤트 핸들러 코드를 추가하세요.
+                }
+            });
+        } else {
+            Log.e("MainActivity6", "TabItem is null. Check the ID in your XML layout.");
+            Toast.makeText(getApplicationContext(), "탭버튼이 null", Toast.LENGTH_SHORT).show();
+        }
         edit_Mypageinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv_name = findViewById(R.id.tv_mypage_rName); name = tv_name.getText().toString();
-                tv_id = findViewById(R.id.tv_mypage_rName); id = tv_id.getText().toString();
-                tv_pw = findViewById(R.id.tv_mypage_rName); pw = tv_pw.getText().toString();
-                tv_grp = findViewById(R.id.tv_mypage_rName); grp = tv_grp.getText().toString();
-                tv_pnum = findViewById(R.id.tv_mypage_rName); pnum = tv_pnum.getText().toString();
-                showEditableDialog(this, name, id, pw, grp, pnum);
+                showEditableDialog(this::onClick, name, id, pw, grp, pnum);
             }
         });
     }
@@ -86,7 +113,7 @@ public class MainActivity6 extends AppCompatActivity {
 
                         // 리스너를 통해 수정된 값을 전달합니다.
                         //if (listener != null) {
-                        //    listener.onValues_Edited(name, idNumber, gender, institution);
+                        //    listener.onValues_Edited(name, id, pw, grp, pnum);
                         //}
 
                         Confirmation();
@@ -105,11 +132,105 @@ public class MainActivity6 extends AppCompatActivity {
     }
     private void Confirmation() {
         // 안내문자서 확인 클릭시
-        // 예: 다음 화면으로 이동, 데이터 저장, 기타 작업 수행
         Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
     }
     private void Cancellation() {
         // 안내문자서 취소 클릭시
         Toast.makeText(getApplicationContext(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
+    }
+    public void Find_info() { // 서버로 보내기
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name",name)
+                .addFormDataPart("id",id)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://15.164.120.162:5000//Sign_up") // 여기 sign_up 말고 딴거 넣어야됨
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+
+                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
+                        String status = json.getString("status");
+                        String result = json.getString("result");
+
+                        Log.d("JSON Response: ", "status: " + status);
+                        Log.d("JSON Response: ", "result: " + result);
+                        server_Result = result;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //아니 서버서 받은 결과 필터링 해야되나
+                                //showInfoDialog(MainActivity3.this,ocr_result);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
+            }
+        });
+    }
+    public void Send2_edinfo(File file) { // 서버로 보내기(수정시)
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name",name) //이름
+                .addFormDataPart("id",id) //아이디
+                .addFormDataPart("pw",pw) //비번
+                .addFormDataPart("group",grp) //그룹
+                .addFormDataPart("pnum",pnum) //폰넘
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://15.164.120.162:5000//Sign_up") // 여기 sign_up 말고 딴거 넣어야됨
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+
+                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
+                        String status = json.getString("status");
+
+                        Log.d("JSON Response: ", "status: " + status);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
+            }
+        });
     }
 }
