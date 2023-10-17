@@ -81,7 +81,7 @@
             <EditText
                 android:id="@+id/etv_mypage_eID"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="id"
                 android:inputType="text"
@@ -147,7 +147,7 @@
             <EditText
                 android:id="@+id/etv_mypage_eGroup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="group"
                 android:inputType="text"
