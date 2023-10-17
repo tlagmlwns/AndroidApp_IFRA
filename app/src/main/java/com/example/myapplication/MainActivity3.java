@@ -462,7 +462,7 @@ public class MainActivity3 extends AppCompatActivity {
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(MainActivity3.this, "인식오류! 다시 캡쳐해주세요. ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "인식오류! 다시 캡쳐해주세요. ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // 응답이 성공적이지 않은 경우에 대한 처리

@@ -97,18 +97,22 @@ public class MainActivity2 extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 mydata.setUser_id(response.getString("user_id"));
                                 mydata.setUser_pass(response.getString("user_pass"));
-                                mydata.setUser_group(response.getString("user_group"));
+                                //mydata.setUser_group(response.getString("user_group"));
+                                mydata.setUser_name(response.getString("user_name"));
+                                mydata.setUser_phoneNum(response.getString("phone_num"));
                                 Log.e("userid","user_id :"+mydata.getUser_id());
                                 Log.e("userpass","user_pass"+mydata.getUser_pass());
                                 Log.e("usergroup","user_group"+mydata.getUser_group());
+                                Log.e("username","user_name"+mydata.getUser_name());
+                                Log.e("userphoneNum","user_phoneNum"+mydata.getUser_phoneNum());
                                 String userId = id.getText().toString();
                                 if (userId.startsWith("m_")) {
-                                    Intent user = new Intent(getApplicationContext(), MainActivity5.class); //5:관리자
-                                    startActivity(user);
+                                    Intent manager = new Intent(getApplicationContext(), MainActivity5.class); //5:관리자
+                                    startActivity(manager);
                                 }
                                 else {
-                                    Intent manager = new Intent(getApplicationContext(), MainActivity4.class); //4:사용자
-                                    startActivity(manager);
+                                    Intent user = new Intent(getApplicationContext(), MainActivity4.class); //4:사용자
+                                    startActivity(user);
                                 }
                             } else {
                                 Log.e("event","Login Fail");
