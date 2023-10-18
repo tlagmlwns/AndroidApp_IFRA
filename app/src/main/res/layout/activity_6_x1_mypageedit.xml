@@ -144,16 +144,11 @@
                 android:textColor="#919191"
                 android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/etv_mypage_eGroup"
+            <Spinner
+                android:id="@+id/sp_mypage_grp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="group"
-                android:inputType="text"
-                android:paddingLeft="5dp"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:layout_height="50dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
