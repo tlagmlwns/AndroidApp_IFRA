@@ -139,7 +139,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:gravity="center"
-        android:text="사용자 님 환영합니다!"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
