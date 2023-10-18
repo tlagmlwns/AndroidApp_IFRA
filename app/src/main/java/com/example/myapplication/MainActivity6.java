@@ -44,7 +44,7 @@ public class MainActivity6 extends AppCompatActivity {
     TabItem Tab_myinfo;
     Spinner S_Grp;
     String E_Grp;
-    TextView tv_name, tv_id, tv_pw, tv_grp, tv_pnum;
+    TextView tv_Name, tv_name, tv_id, tv_pw, tv_grp, tv_pnum;
     EditText E_Name, E_ID, E_PW, E_PNum;
     String name, id, pw, grp, grp_num, pnum, old_id;
 
@@ -85,6 +85,7 @@ public class MainActivity6 extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "탭버튼이 null", Toast.LENGTH_SHORT).show();
         }
         edit_Mypageinfo.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 showEditableDialog(this, name, id, pw, grp, pnum,
@@ -96,12 +97,14 @@ public class MainActivity6 extends AppCompatActivity {
                                 // editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
                                 // 예시로 수정된 이름을 Toast 메시지로 출력하는 예시:
                                 Toast.makeText(MainActivity6.this, "수정완료 ", Toast.LENGTH_SHORT).show();
+
                             }
                         });
             }
         });
     }
     public void showMyInfo(){
+        tv_Name = findViewById(R.id.tv_Name);
         tv_name = findViewById(R.id.tv_mypage_rName);
         tv_id = findViewById(R.id.tv_mypage_rID);
         tv_pw = findViewById(R.id.tv_mypage_rPW);
@@ -110,16 +113,14 @@ public class MainActivity6 extends AppCompatActivity {
 
         name = mydata.getUser_name();
         id = mydata.getUser_id();
-        if (old_id == id) {old_id = id;}
         pw = mydata.getUser_pass();
         grp = mydata.getUser_group();
-        if (grp == "Class C") { grp_num = "1";}
-        else if (grp == "Class Java") { grp_num = "2";}
         pnum = mydata.getUser_phoneNum();
         if (pnum.length() == 11) {
             pnum = pnum.substring(0, 3) + "-" + pnum.substring(3, 7) + "-" + pnum.substring(7);
         }
 
+        tv_Name.setText(name);
         tv_name.setText(name);
         tv_id.setText(id);
         tv_pw.setText(pw);
@@ -145,15 +146,17 @@ public class MainActivity6 extends AppCompatActivity {
         E_PW.setText(edPW);
 
         S_Grp = viewV1.findViewById(R.id.sp_mypage_grp);
-        String[] options = {"Class C", "Class Java"}; //1, 2
+        String[] options = {"Class C", "Class Java", "미정"}; //1, 2, 3
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         S_Grp.setAdapter(adapter);
         S_Grp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // 사용자가 선택한 항목의 텍스트 가져오기
+                E_Grp = edGroup.toString();
                 E_Grp = parentView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(), "선택: " + E_Grp, Toast.LENGTH_SHORT).show();
+                if (E_Grp == "미정"){ E_Grp=""; }
+                //Toast.makeText(getApplicationContext(), "선택: " + E_Grp, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -185,11 +188,10 @@ public class MainActivity6 extends AppCompatActivity {
 
                         if (listener != null) {
                             listener.onValues_Edited(name, id, pw, grp, pnum);
+                            Send2_edinfo(); // 수정한 정보 업데이트
                             finish();
                             startActivity(getIntent());
-                            //Send2_edinfo(); // 수정한 정보 업데이트
                         }
-
                         Confirmation();
                     }
                 })
@@ -213,7 +215,10 @@ public class MainActivity6 extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
     }
     public void Send2_edinfo() { // 서버로 보내기(수정시)
-
+        if (old_id == null) {old_id = id;}
+        if (grp == "Class C") { grp_num = "1";}
+        else if (grp == "Class Java") { grp_num = "2";}
+        else {grp_num = "";}
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("old_id",old_id)//이전 아이디
