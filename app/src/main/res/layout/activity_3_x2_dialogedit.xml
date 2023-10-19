@@ -68,7 +68,7 @@
             <EditText
                 android:id="@+id/etv_ocrresult_gender"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="gender"
                 android:inputType="text"
@@ -141,7 +141,7 @@
             <EditText
                 android:id="@+id/etv_ocrresult_ca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="institution"
                 android:inputType="text"
