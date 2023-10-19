@@ -35,7 +35,8 @@ public class MainActivity7 extends AppCompatActivity {
     ImageButton ulc_Mypage;
     ImageButton ulc_Back;
     CalendarView calendarview;
-    TextView IN_dateInfo, OUT_dateInfo;
+    //TextView IN_dateInfo, OUT_dateInfo;
+    TextView IN_stats, IN_lr,OUT_stats, OUT_lr, S_Date1, S_Date2;
     String State, IN_time, OUT_time; //server data
     String F_Year, F_Month, F_Day, F_Time, F_TimeZone; //Datefilter data
 
@@ -56,8 +57,14 @@ public class MainActivity7 extends AppCompatActivity {
         long millis = calendar.getTimeInMillis();
         calendarview.setDate(millis);
         //-------------------------------------------------
-        IN_dateInfo = findViewById(R.id.tv_dateInfo1);
-        OUT_dateInfo = findViewById(R.id.tv_dateInfo2);
+        //IN_dateInfo = findViewById(R.id.tv_dateInfo1);
+        //OUT_dateInfo = findViewById(R.id.tv_dateInfo2);
+        IN_stats = findViewById(R.id.tv_Lstats_IN_result);
+        IN_lr = findViewById(R.id.tv_LR_INV);
+        OUT_stats = findViewById(R.id.tv_Lstats_OUT_result);
+        OUT_lr = findViewById(R.id.tv_LR_OUTV);
+        S_Date1 = findViewById(R.id.tv_LselectDate_result);
+        S_Date2 = findViewById(R.id.tv_LselectDate_result2);
         ulc_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { finish();}
@@ -73,6 +80,9 @@ public class MainActivity7 extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
                 // 선택된 날짜 정보를 가지고 원하는 동작 수행
+                selectedDate="";
+                S_Date1.setText(selectedDate);
+                S_Date2.setText(selectedDate);
                 Calendar currentCalendar = Calendar.getInstance();
                 int cur_Year = currentCalendar.get(Calendar.YEAR);
                 int cur_Month = currentCalendar.get(Calendar.MONTH);
@@ -83,23 +93,38 @@ public class MainActivity7 extends AppCompatActivity {
                 logDate = F_Year + "년 " + F_Month + "월 " + F_Day + "일";
                 selectedDate = year + "년 " + (month + 1) + "월 " + day + "일";
                 if(selectedDate.equals(currentDate)){
+                    S_Date1.setText(selectedDate);
+                    S_Date2.setText(selectedDate);
                     updateUI(year, month, day, calendarview);
                 }
                 else if ((year > cur_Year || (year == cur_Year && month > cur_Month) ||
                         (year == cur_Year && month == cur_Month && day > cur_Day))) {
-                    IN_dateInfo.setText("결과 없음");
-                    OUT_dateInfo.setText("");
-                    IN_dateInfo.setTextColor(Color.GRAY);
+
+                    //IN_dateInfo.setText("결과 없음");
+                    //OUT_dateInfo.setText("");
+                    //IN_dateInfo.setTextColor(Color.GRAY);
+                    IN_lr.setText("결과 없음"); IN_lr.setTextColor(Color.GRAY);
+                    IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
+                    OUT_lr.setVisibility(View.INVISIBLE);
+                    OUT_lr.setText("결과 없음"); OUT_lr.setTextColor(Color.GRAY);
+                    OUT_stats.setText(""); OUT_stats.setTextColor(Color.GRAY);
                 } else {
                     // 과거의 날짜를 클릭한 경우
                     if(selectedDate.equals(IN_time)){
+                        S_Date1.setText(selectedDate);
+                        S_Date2.setText(selectedDate);
                         updateUI(year, month, day, calendarview);
                     }
                     else {
                         // 오늘 날짜를 클릭했지만 서버에서 데이터가 없는 경우
-                        IN_dateInfo.setText("결과 없음");
-                        OUT_dateInfo.setText("");
-                        IN_dateInfo.setTextColor(Color.GRAY);
+                        //IN_dateInfo.setText("결과 없음");
+                        //OUT_dateInfo.setText("");
+                        //IN_dateInfo.setTextColor(Color.GRAY);
+                        IN_lr.setText("결과 없음"); IN_lr.setTextColor(Color.GRAY);
+                        IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
+                        OUT_lr.setVisibility(View.INVISIBLE);
+                        OUT_lr.setText("결과 없음"); OUT_lr.setTextColor(Color.GRAY);
+                        OUT_stats.setText(""); OUT_stats.setTextColor(Color.GRAY);
                     }
                 }
             }
@@ -156,11 +181,21 @@ public class MainActivity7 extends AppCompatActivity {
     }
     public void updateUI(int year,int  month, int day, CalendarView calendarview) {
         selectedDate = year + "년 " + (month + 1) + "월 " + day + "일";
-        IN_dateInfo.setText("입장" + " " + selectedDate + " " + IN_time);
-        IN_dateInfo.setTextColor(Color.BLUE);
+        S_Date1.setText(selectedDate);
+        S_Date2.setText(selectedDate);
+        //IN_dateInfo.setText("입장" + " " + selectedDate + " " + IN_time);
+        //IN_dateInfo.setTextColor(Color.BLUE);
+        IN_lr.setText(IN_time);
+        IN_stats.setText("입장");
+        IN_stats.setTextColor(Color.BLUE);
+
         if (OUT_time.toString() != null) {
-            OUT_dateInfo.setText(State + " " + selectedDate + " " + OUT_time);
-            OUT_dateInfo.setTextColor(Color.RED);
+            //OUT_dateInfo.setText(State + " " + selectedDate + " " + OUT_time);
+            //OUT_dateInfo.setTextColor(Color.RED);
+            OUT_lr.setVisibility(View.VISIBLE);
+            OUT_lr.setText(OUT_time);
+            OUT_stats.setText(State);
+            OUT_stats.setTextColor(Color.RED);
         }
         selectedDate="";
     }
