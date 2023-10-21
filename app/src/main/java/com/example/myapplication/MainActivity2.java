@@ -106,7 +106,7 @@ public class MainActivity2 extends AppCompatActivity {
                                 Log.e("username","user_name"+mydata.getUser_name());
                                 Log.e("userphoneNum","user_phoneNum"+mydata.getUser_phoneNum());
                                 String userId = id.getText().toString();
-                                if (userId.startsWith("m_")) {
+                                if (userId.startsWith("m_zbs")) { //하나의 아이디로
                                     Intent manager = new Intent(getApplicationContext(), MainActivity5.class); //5:관리자
                                     startActivity(manager);
                                 }
