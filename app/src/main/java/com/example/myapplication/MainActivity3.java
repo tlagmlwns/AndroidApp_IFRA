@@ -46,21 +46,13 @@ public class MainActivity3 extends AppCompatActivity {
     String directoryPath;
     File directory;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private ActivityResultLauncher<Intent> cameraLauncher;
-    private ActivityResultLauncher<Intent> cer_cameraLauncher;
+    private ActivityResultLauncher<Intent> cameraLauncher, cer_cameraLauncher;
     private String ocr_result;
-    ImageView imageView;
-    ImageButton back;
-    Button certified;
-    Button submit;
+    ImageView imageView, back;
+    Button certified, submit, check_id;
     CheckBox checkBox;
-    String name;
-    String idNumber;
-    String gender;
-    String institution;
-    String phone_num;
-    String identify;
-    String password;
+    EditText id, pw, pn;
+    String name, identify, password, phone_num, idNumber, gender, institution;
     File user_face;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +65,10 @@ public class MainActivity3 extends AppCompatActivity {
         certified = findViewById(R.id.btn_cer);
         checkBox = findViewById(R.id.cb_MJ);
         submit = findViewById(R.id.btn_loginGo);
-
+        check_id = findViewById(R.id.btn_overlap);
+        id = findViewById(R.id.etv_ID);
+        pw = findViewById(R.id.etv_pw);
+        pn = findViewById(R.id.PhoneNum);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,12 +79,24 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {cer_takePicture();}
         });
+        check_id.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(id.getText().toString().equals("")){
+                    Toast.makeText(MainActivity3.this, "아이디를 입력하시오", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity3.this, "체크 후 경고 문자가 뜨지 않는다면\n아이디 사용가능 합니다.", Toast.LENGTH_SHORT).show();
+                    check_id(id.getText().toString());
+                }
+            }
+        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                identify = ((EditText) findViewById(R.id.etv_ID)).getText().toString();
-                password = ((EditText) findViewById(R.id.etv_pw)).getText().toString();
-                phone_num = ((EditText) findViewById(R.id.PhoneNum)).getText().toString();
+                identify = id.getText().toString();
+                password = pw.getText().toString();
+                phone_num = pn.getText().toString();
                 if (phone_num.length() == 11) {
                     phone_num = phone_num.substring(0, 3) + "-" + phone_num.substring(3, 7) + "-" + phone_num.substring(7);
                 }
@@ -162,8 +169,6 @@ public class MainActivity3 extends AppCompatActivity {
                                 e.printStackTrace();
                                 Log.e("image storage", "Fail: " + e.getMessage());
                             }
-
-
                             // 서버로 이미지를 업로드
                             send2Server(internalFile);
                             //information = ocr_result;
@@ -560,4 +565,57 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
     }
+    public void check_id(String id) { // 서버로 보내기
+        Log.e("test",id);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("id",id)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://15.164.120.162:5000/check")
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+
+                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
+                        String status = json.getString("status");
+
+                        Log.d("JSON Response: ", "status: " + status);
+
+                        if ("already in".equals(status)) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "중복되는 아이디가 있습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "아이디 사용가능 합니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
+            }
+        });
+    }
+
 }
