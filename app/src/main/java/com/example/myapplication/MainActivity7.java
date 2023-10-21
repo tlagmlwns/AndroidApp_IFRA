@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.util.Calendar;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,14 +35,10 @@ import okhttp3.Response;
 
 public class MainActivity7 extends AppCompatActivity {
     Single_ton_data mydata = Single_ton_data.getInstance();
-    ImageButton ulc_Mypage;
-    ImageButton ulc_Back;
+    ImageButton ulc_Mypage, ulc_Back;
     CalendarView calendarview;
-    //TextView IN_dateInfo, OUT_dateInfo;
-    TextView IN_stats, IN_lr,OUT_stats, OUT_lr, S_Date1, S_Date2;
+    TextView IN_stats, IN_lr, OUT_stats, OUT_lr, S_Date1, S_Date2;
     String State, IN_time, OUT_time; //server data
-    String F_Year, F_Month, F_Day, F_Time, F_TimeZone; //Datefilter data
-
     String selectedDate, logDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +56,6 @@ public class MainActivity7 extends AppCompatActivity {
         long millis = calendar.getTimeInMillis();
         calendarview.setDate(millis);
         //-------------------------------------------------
-        //IN_dateInfo = findViewById(R.id.tv_dateInfo1);
-        //OUT_dateInfo = findViewById(R.id.tv_dateInfo2);
         IN_stats = findViewById(R.id.tv_Lstats_IN_result);
         IN_lr = findViewById(R.id.tv_LR_INV);
         OUT_stats = findViewById(R.id.tv_Lstats_OUT_result);
@@ -76,68 +73,27 @@ public class MainActivity7 extends AppCompatActivity {
                 startActivity(ulcmypage);
             }
         });
+
         calendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // 선택된 날짜 정보를 가지고 원하는 동작 수행
-                selectedDate="";
+                String senddate = Integer.toString(year) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(dayOfMonth) ;
+                selectedDate = year + "년 " + (month + 1) + "월 " + dayOfMonth + "일 ";
                 S_Date1.setText(selectedDate);
-                S_Date2.setText(selectedDate);
-                Calendar currentCalendar = Calendar.getInstance();
-                int cur_Year = currentCalendar.get(Calendar.YEAR);
-                int cur_Month = currentCalendar.get(Calendar.MONTH);
-                int cur_Day = currentCalendar.get(Calendar.DAY_OF_MONTH);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault());
-                String currentDate = sdf.format(new Date());
-                get_log();
-                logDate = F_Year + "년 " + F_Month + "월 " + F_Day + "일";
-                selectedDate = year + "년 " + (month + 1) + "월 " + day + "일";
-                if(selectedDate.equals(currentDate)){
-                    S_Date1.setText(selectedDate);
-                    S_Date2.setText(selectedDate);
-                    updateUI(year, month, day, calendarview);
-                }
-                else if ((year > cur_Year || (year == cur_Year && month > cur_Month) ||
-                        (year == cur_Year && month == cur_Month && day > cur_Day))) {
-
-                    //IN_dateInfo.setText("결과 없음");
-                    //OUT_dateInfo.setText("");
-                    //IN_dateInfo.setTextColor(Color.GRAY);
-                    IN_lr.setText("결과 없음"); IN_lr.setTextColor(Color.GRAY);
-                    IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
-                    OUT_lr.setVisibility(View.INVISIBLE);
-                    OUT_lr.setText("결과 없음"); OUT_lr.setTextColor(Color.GRAY);
-                    OUT_stats.setText(""); OUT_stats.setTextColor(Color.GRAY);
-                } else {
-                    // 과거의 날짜를 클릭한 경우
-                    if(selectedDate.equals(IN_time)){
-                        S_Date1.setText(selectedDate);
-                        S_Date2.setText(selectedDate);
-                        updateUI(year, month, day, calendarview);
-                    }
-                    else {
-                        // 오늘 날짜를 클릭했지만 서버에서 데이터가 없는 경우
-                        //IN_dateInfo.setText("결과 없음");
-                        //OUT_dateInfo.setText("");
-                        //IN_dateInfo.setTextColor(Color.GRAY);
-                        IN_lr.setText("결과 없음"); IN_lr.setTextColor(Color.GRAY);
-                        IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
-                        OUT_lr.setVisibility(View.INVISIBLE);
-                        OUT_lr.setText("결과 없음"); OUT_lr.setTextColor(Color.GRAY);
-                        OUT_stats.setText(""); OUT_stats.setTextColor(Color.GRAY);
-                    }
-                }
+                get_log(senddate);
             }
         });
     }
-    public void get_log() {
+    public void get_log(String sedate) {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("id",mydata.getUser_id())
+                .addFormDataPart("date",sedate)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://15.164.120.162:5000/log") //<- 수정
+                .url("http://15.164.120.162:5000/log")
                 .post(requestBody)
                 .build();
 
@@ -161,12 +117,12 @@ public class MainActivity7 extends AppCompatActivity {
                         Log.d("JSON Response: ", "status: " + status);
                         Log.d("JSON Response: ", "inner_time: " + inner_time);
                         Log.d("JSON Response: ", "outter_time: " + outter_time);
+
                         IN_time = inner_time;
                         OUT_time = outter_time;
                         State = state;
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "없는듯 ㅋ", Toast.LENGTH_SHORT).show();
                     }
                 } else { Log.e("Response Error", "Response Code: " + response.code());}
 
@@ -174,54 +130,52 @@ public class MainActivity7 extends AppCompatActivity {
                     @Override
                     public void run() {
                         Datefilter(IN_time);
+
+                        if(selectedDate.equals(logDate)){
+                            if(State.equals("퇴장")){ //최종 State가 퇴장일때
+                                IN_stats.setText("입장"); IN_stats.setTextColor(Color.BLUE); //입장시 로그
+                                IN_lr.setText(IN_time); IN_lr.setTextColor(Color.BLACK);
+
+                                S_Date2.setText(selectedDate);
+                                OUT_stats.setText(State); OUT_stats.setTextColor(Color.RED); //퇴장시 로그
+                                OUT_lr.setText(OUT_time); OUT_lr.setTextColor(Color.BLACK);
+                            }
+                            else{ //최종 State가 입장일때
+                                IN_stats.setText(State); IN_stats.setTextColor(Color.BLUE); //입장시 로그
+                                IN_lr.setText(IN_time); IN_lr.setTextColor(Color.BLACK);
+
+                                S_Date2.setText("");
+                                OUT_stats.setText(""); OUT_stats.setTextColor(Color.RED); //퇴장시 로그
+                                OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
+                            }
+                        }
+                        else{ //아예 Nodata일때
+                            IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
+                            IN_lr.setText("결과없음"); IN_lr.setTextColor(Color.GRAY);
+
+                            S_Date2.setText("");
+                            OUT_stats.setText(""); OUT_lr.setTextColor(Color.GRAY);
+                            OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
+
+                        }
                     }
                 });
             }
         });
     }
-    public void updateUI(int year,int  month, int day, CalendarView calendarview) {
-        selectedDate = year + "년 " + (month + 1) + "월 " + day + "일";
-        S_Date1.setText(selectedDate);
-        S_Date2.setText(selectedDate);
-        //IN_dateInfo.setText("입장" + " " + selectedDate + " " + IN_time);
-        //IN_dateInfo.setTextColor(Color.BLUE);
-        IN_lr.setText(IN_time);
-        IN_stats.setText("입장");
-        IN_stats.setTextColor(Color.BLUE);
-
-        if (OUT_time.toString() != null) {
-            //OUT_dateInfo.setText(State + " " + selectedDate + " " + OUT_time);
-            //OUT_dateInfo.setTextColor(Color.RED);
-            OUT_lr.setVisibility(View.VISIBLE);
-            OUT_lr.setText(OUT_time);
-            OUT_stats.setText(State);
-            OUT_stats.setTextColor(Color.RED);
-        }
-        selectedDate="";
-    }
     public void Datefilter(String time_data){
         //String dateString = "Wed, 18 Oct 2023 09:10:00 GMT";
         String dateString = time_data;
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.KOREA);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
         try {
-            Date date = sdf.parse(dateString);
-            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEE", Locale.KOREA); // 요일을 얻기 위한 포맷 지정
-            SimpleDateFormat dayOfMonthFormat = new SimpleDateFormat("dd", Locale.KOREA);  // 일을 얻기 위한 포맷 지정
-            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM", Locale.KOREA); // 달을 얻기 위한 포맷 지정
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.KOREA); // 시간을 얻기 위한 포맷 지정
-            SimpleDateFormat timeZoneFormat = new SimpleDateFormat("z", Locale.KOREA); // 시간대 정보를 얻기 위한 포맷 지정
-
-            // 각각의 포맷을 사용하여 요일, 일, 달, 시간, 시간대 정보를 추출합니다.
-            F_Year = yearFormat.format(date);           //System.out.println("년: " + F_Year);
-            F_Month = monthFormat.format(date);         //System.out.println("달: " + F_Month);
-            F_Day = dayOfMonthFormat.format(date);      //System.out.println("일: " + F_Day);
-            F_Time= timeFormat.format(date);            //System.out.println("시간: " + F_Time);
-            F_TimeZone = timeZoneFormat.format(date);   //System.out.println("시간대: " + F_TimeZone);
-
+            Date date = dateFormat.parse(dateString); // 문자열을 Date 객체로 파싱
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 ", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
+            String outputDateString = outputFormat.format(date);
+            logDate = outputDateString;
         } catch (ParseException e) {
             e.printStackTrace();
+            // 예외 처리 코드 추가
         }
     }
 }
