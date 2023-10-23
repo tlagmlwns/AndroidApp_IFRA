@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/ibtn_info"
+                android:id="@+id/ibtn_Test"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="#673AB7"
