@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity5 extends AppCompatActivity {
-    ImageButton mm_Mypage; //mm_Mypage : Manager Main -> Mypage
+    ImageButton Test, mm_Mypage; //mm_Mypage : Manager Main -> Mypage
     Button mm_Logcheck; //mm_Logcheck : Manager Main -> Logcheck
     Button Manage;
     CountDownTimer countDownTimer;
@@ -28,10 +28,18 @@ public class MainActivity5 extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
         setContentView(R.layout.activity_5_mmain);
 
+        Test = findViewById(R.id.ibtn_Test);
         mm_Mypage = findViewById(R.id.ibtn_mypage);
         mm_Logcheck = findViewById(R.id.btn_lcmanager);
         Manage = findViewById(R.id.btn_Manage);
         timeTextView = findViewById(R.id.tv_Time);
+        Test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Test = new Intent(getApplicationContext(), MainActivity9.class);
+                startActivity(Test);
+            }
+        });
         mm_Mypage.setOnClickListener(new View.OnClickListener() { //마이페이지 바로가기
             @Override
             public void onClick(View view) {

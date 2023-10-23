@@ -30,11 +30,13 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/ibtn_info"
+                android:id="@+id/ibtn_Test"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/call" />
+                android:background="#673AB7"
+                android:padding="7dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/writing" />
 
             <TextView
                 android:id="@+id/tv_main5"
