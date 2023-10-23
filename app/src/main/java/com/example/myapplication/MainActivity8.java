@@ -17,9 +17,6 @@ import android.widget.Toast;
 
 public class MainActivity8 extends AppCompatActivity {
     ImageButton mpBack, mpMypage;
-    Button F5;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +27,6 @@ public class MainActivity8 extends AppCompatActivity {
         mpBack = findViewById(R.id.ibtn_mpBack);
         mpMypage = findViewById(R.id.ibtn_mpmypage);
 
-        F5 = findViewById(R.id.btn_f5);
         mpBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { finish();}
@@ -40,12 +36,6 @@ public class MainActivity8 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent mpmypage=new Intent(getApplicationContext(), MainActivity6.class);
                 startActivity(mpmypage);
-            }
-        });
-        F5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "새로고침 준비중입니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
