@@ -42,13 +42,11 @@ public class MainActivity9 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "새로고침 준비중입니다.", Toast.LENGTH_SHORT).show();
-                t_aDatas.removeAll(Arrays.asList());
+                if (!t_aDatas.isEmpty()) {t_aDatas.clear();}
                 Random rand = new Random();
-                int num = rand.nextInt(6);
+                int num = rand.nextInt(10);
                 for(int i =0; i<=num; i++){
-                    t_aDatas.add(new Test_Alarm("new1","2023-10-23"));
-
-
+                    t_aDatas.add(new Test_Alarm("new_"+i,"2023-10-23"));
                 }
                 t_aAdapter = new Test_AlarmAdapter(t_aDatas);
                 recyclerView.setAdapter(t_aAdapter);

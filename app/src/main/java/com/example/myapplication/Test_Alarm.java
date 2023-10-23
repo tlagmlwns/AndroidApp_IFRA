@@ -3,6 +3,7 @@ package com.example.myapplication;
 public class Test_Alarm {
     private String filename;
     private String filedate;
+    //사진 추가 해야됨
     public Test_Alarm(String filename, String filedate){
         this.filename = filename;
         this.filedate = filedate;

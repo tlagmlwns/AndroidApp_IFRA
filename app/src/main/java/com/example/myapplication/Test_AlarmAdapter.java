@@ -25,7 +25,6 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
     @Override
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //ViewHolder 객체 생성 후 리턴.
-        //작성한 list_iem.xml 를 생성하는 부분이라고 생각하시면 됩니다.
         return new BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_9_z_warning_no, parent, false));
     }
     @Override
