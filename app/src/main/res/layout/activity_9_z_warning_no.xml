@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
@@ -13,11 +13,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/iv_nf"
             android:layout_width="125dp"
             android:layout_height="125dp"
-            tools:srcCompat="@tools:sample/avatars"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,21 +35,21 @@
                     android:id="@+id/tv_mm_fn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="파일이름 : "
-                    android:textStyle="bold"
                     android:textSize="15dp"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_mm_fnR"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint=" new face"
                     android:paddingLeft="5dp"
                     android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,20 +61,20 @@
                     android:id="@+id/tv_mm_date"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="날짜 : "
-                    android:textStyle="bold"
                     android:textSize="15dp"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_mm_dateR"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint=" yyyy/mm/dd HH:MM:ss"
                     android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
