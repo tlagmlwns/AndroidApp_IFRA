@@ -114,12 +114,14 @@ public class MainActivity6 extends AppCompatActivity {
         name = mydata.getUser_name();
         id = mydata.getUser_id();
         pw = mydata.getUser_pass();
-        grp = mydata.getUser_group();
+        if (mydata.getUser_group().equals("1")){grp = "Class C";}
+        else if (mydata.getUser_group().equals("2")) {grp = "Class Java";}
+        else if (mydata.getUser_group().equals("")) {grp = "none";}
+        else {grp = mydata.getUser_group();}
         pnum = mydata.getUser_phoneNum();
         if (pnum.length() == 11) {
             pnum = pnum.substring(0, 3) + "-" + pnum.substring(3, 7) + "-" + pnum.substring(7);
         }
-
         tv_Name.setText(name);
         tv_name.setText(name);
         tv_id.setText(id);
@@ -155,7 +157,7 @@ public class MainActivity6 extends AppCompatActivity {
                 // 사용자가 선택한 항목의 텍스트 가져오기
                 E_Grp = edGroup.toString();
                 E_Grp = parentView.getItemAtPosition(position).toString();
-                if (E_Grp == "미정"){ E_Grp=""; }
+                if (E_Grp == "미정"){ E_Grp="none"; }
                 //Toast.makeText(getApplicationContext(), "선택: " + E_Grp, Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -185,6 +187,9 @@ public class MainActivity6 extends AppCompatActivity {
                         pw = mydata.getUser_pass();
                         grp = mydata.getUser_group();
                         pnum = mydata.getUser_phoneNum();
+                        if (pnum.length() == 11) {
+                            pnum = pnum.substring(0, 3) + "-" + pnum.substring(3, 7) + "-" + pnum.substring(7);
+                        }
 
                         if (listener != null) {
                             listener.onValues_Edited(name, id, pw, grp, pnum);
@@ -216,9 +221,9 @@ public class MainActivity6 extends AppCompatActivity {
     }
     public void Send2_edinfo() { // 서버로 보내기(수정시)
         if (old_id == null) {old_id = id;}
-        if (grp == "Class C") { grp_num = "1";}
-        else if (grp == "Class Java") { grp_num = "2";}
-        else {grp_num = "";}
+        if (grp.equals("Class C")) { grp_num = "1";}
+        else if (grp.equals("Class Java")) { grp_num = "2";}
+        else {grp_num = "none";}
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("old_id",old_id)//이전 아이디

@@ -45,12 +45,8 @@ public class Single_ton_data {
         user_pass=u_pass;
     }
 
-    public String getUser_group() {
-        return user_group;
-    }
-    public void setUser_group(String u_group){
-        user_group=u_group;
-    }
+    public String getUser_group() { return user_group;}
+    public void setUser_group(String u_group){user_group=u_group;}
 
     public String getUser_name() {return user_name;}
     public void  setUser_name(String u_name) {user_name=u_name;}
