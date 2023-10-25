@@ -36,6 +36,7 @@
                 android:background="#673AB7"
                 android:padding="7dp"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/writing" />
 
             <TextView
@@ -95,12 +96,12 @@
                     app:srcCompat="@drawable/checklist" />
 
                 <Button
-                    android:id="@+id/btn_lcmanager"
+                    android:id="@+id/btn_Test"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="로그 확인" />
+                    android:text="방문자 확인" />
             </LinearLayout>
         </LinearLayout>
 
