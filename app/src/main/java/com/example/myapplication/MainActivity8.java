@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,12 +12,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -30,20 +36,25 @@ public class MainActivity8 extends AppCompatActivity {
     EditText Year;
     Spinner Month, dayOM;
     ImageButton ALSearch;
-    String yyyy, mm, dom;
-    String in_T, out_T, statE, confidencE, user_iD;
+    String yyyy, mm, dom; //서버에 요청조건
+    String in_T, out_T, statE, confidencE, user_iD;//서버의 결과
+    RecyclerView recyclerView;
+    All_LogAdapter AL_Adapter;
+    List<All_Log> AL_Datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
-        setContentView(R.layout.activity_8_);
+        setContentView(R.layout.activity_8_managerpage);
 
         mpBack = findViewById(R.id.ibtn_mpBack);
         Year = findViewById(R.id.etv_mm_YEAR);
         Month = findViewById(R.id.sp_mm_Month);
         dayOM = findViewById(R.id.sp_mm_dOM);
         ALSearch = findViewById(R.id.ibtn_mm_search);
+        recyclerView = findViewById(R.id.list_rv_Alllog);
+        AL_Datas = new ArrayList<>();
         mpBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { finish();}
@@ -84,9 +95,21 @@ public class MainActivity8 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 yyyy = Year.getText().toString();
-                All_log(yyyy, mm, dom);
+                //All_log(yyyy, mm, dom); 일단 보류
+                if (!AL_Datas.isEmpty()) {AL_Datas.clear();}
+                Random rand = new Random();
+                int num = rand.nextInt(10);
+                for(int i =0; i<=num; i++){
+                    AL_Datas.add(new All_Log("09:50",
+                                             "18:50",
+                                             rand.nextInt(51) + 50+"%",
+                                             "학생"+i));
+                }
+                AL_Adapter = new All_LogAdapter(AL_Datas);
+                recyclerView.setAdapter(AL_Adapter);
             }
         });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void All_log (String year, String month, String dayofmonth){
