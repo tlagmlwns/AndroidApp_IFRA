@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,8 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
 
                 // 다이얼로그 레이아웃에 포함된 위젯들에 대한 작업을 할 수 있습니다.
                 // textView.setText("다이얼로그 내용 설정"); // 다이얼로그 내용을 동적으로 설정할 수 있습니다.
-
+                ImageView imageView = dialogView.findViewById(R.id.im_NF); // 이미지뷰를 찾습니다.
+                imageView.setImageResource(R.drawable.lucky7);
                 builder.setView(dialogView)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
