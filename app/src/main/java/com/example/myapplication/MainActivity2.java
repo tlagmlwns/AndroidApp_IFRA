@@ -110,10 +110,14 @@ public class MainActivity2 extends AppCompatActivity {
                                 if (userId.startsWith("m_zbs")) { //하나의 아이디로
                                     Intent manager = new Intent(getApplicationContext(), MainActivity5.class); //5:관리자
                                     startActivity(manager);
+                                    id.setText(""); //로그인시 입력칸 초기화
+                                    pw.setText("");
                                 }
                                 else {
                                     Intent user = new Intent(getApplicationContext(), MainActivity4.class); //4:사용자
                                     startActivity(user);
+                                    id.setText(""); //로그인시 입력칸 초기화
+                                    pw.setText("");
                                 }
                             } else {
                                 Log.e("event","Login Fail");
