@@ -16,10 +16,17 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -66,7 +73,7 @@ public class MainActivity8 extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 mm = mms[position].toString(); // 사용자가 선택한 항목의 텍스트 가져오기
-                Toast.makeText(getApplicationContext(), "선택된 항목: " + mm, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "선택된 항목: " + mm, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -84,7 +91,7 @@ public class MainActivity8 extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 dom = doms[position].toString(); // 사용자가 선택한 항목의 텍스트 가져오기
-                Toast.makeText(getApplicationContext(), "선택된 항목: " + dom, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "선택된 항목: " + dom, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -95,29 +102,111 @@ public class MainActivity8 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 yyyy = Year.getText().toString();
-                //All_log(yyyy, mm, dom); 일단 보류
                 if (!AL_Datas.isEmpty()) {AL_Datas.clear();}
-                Random rand = new Random();
-                int num = rand.nextInt(10);
-                for(int i =0; i<=num; i++){
-                    AL_Datas.add(new All_Log("09:50",
-                                             "18:50",
-                                             rand.nextInt(51) + 50+"%",
-                                             "학생"+i));
-                }
-                AL_Adapter = new All_LogAdapter(AL_Datas);
-                recyclerView.setAdapter(AL_Adapter);
+                All_log(yyyy, mm, dom);
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+    public void All_log(String year, String month, String dayofmonth) {
+        String senddate = year + "-" + month + "-" + dayofmonth;
 
-    public void All_log (String year, String month, String dayofmonth){
-        String date = year+"-"+month+"-"+dayofmonth;
-        Log.d("JSON Response: ", "date: " + date); //1. 이거 까진 잘 들어가는데
+        Log.d("JSON Response: ", "date: " + senddate);
+
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("date",date)
+                .addFormDataPart("date", senddate) // 문자열 형태로 전송
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://15.164.120.162:5000/all_log") // URL 오타 수정
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+
+                        // "status" 키를 사용하여 응답 상태 확인
+                        String status = json.getString("status");
+                        if (status.equals("success")) {
+                            JSONArray logsArray = json.getJSONArray("logs");
+
+                            for (int i = 0; i < logsArray.length(); i++) {
+                                JSONObject logObject = logsArray.getJSONObject(i);
+                                String state = logObject.getString("state");
+                                String inner_time = logObject.getString("inner_time");
+                                String outter_time = logObject.getString("outter_time");
+                                String confidence = logObject.getString("confidence");
+                                String user_id = logObject.getString("user_id");
+
+                                // 로그 정보를 처리하는 코드 추가
+                                Log.d("JSON Response: ", "status: " + status);
+                                Log.d("JSON Response: ", "inner_time: " + inner_time);
+                                Log.d("JSON Response: ", "outter_time: " + outter_time);
+                                Log.d("JSON Response: ", "state: " + state);
+                                Log.d("JSON Response: ", "confidence: " + confidence);
+                                Log.d("JSON Response: ", "user_id: " + user_id);
+
+                                if (inner_time.equals("null")) {inner_time = "";}
+                                if (outter_time.equals("null")) {outter_time = "";}
+                                if (state.equals("null")) {state = "";}
+                                if (confidence.equals("null")) {confidence = "";}
+                                if (user_id.equals("null")) {user_id = "";}
+
+                                AL_Datas.add(new All_Log(inner_time,
+                                                         outter_time,
+                                                         confidence,
+                                                         user_id));
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // 메인 스레드에서 UI 작업을 수행
+                                    AL_Adapter = new All_LogAdapter(AL_Datas);
+                                    recyclerView.setAdapter(AL_Adapter);
+                                }
+                            });
+                        } else if (status.equals("no_logs")) {
+                            // 로그 없음 처리
+                            Log.d("JSON Response: ", "No logs available for the given date.");
+                        } else if (status.equals("error")) {
+                            // 오류 처리
+                            Log.e("Response Error", "Error occurred while fetching logs.");
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSON Error", "Error parsing JSON response: " + e.getMessage());
+                    }
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
+            }
+        });
+    }
+
+    /*
+    public void All_log (String year, String month, String dayofmonth){
+        String senddate = (year)+"-"+(month)+"-"+(dayofmonth);
+
+        Log.d("JSON Response: ", "date: " + senddate); //1. 이거 까진 잘 들어가는데
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("date", String.valueOf(senddate))
                 .build();
 
         Request request = new Request.Builder()
@@ -144,7 +233,7 @@ public class MainActivity8 extends AppCompatActivity {
                         String inner_time = json.getString("inner_time"); //2. 이건 안나오네
                         String outter_time = json.getString("outter_time");
                         String state = json.getString("state");
-                        String confidence = json.getString("confidence");
+                        int confidence = json.getString("confidence");
                         String user_id = json.getString("user_id");
 
                         Log.d("JSON Response: ", "status: " + status);
@@ -169,5 +258,5 @@ public class MainActivity8 extends AppCompatActivity {
                 }
             }
         });
-    }
+    }*/
 }
