@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="프로젝트 이름"
+                android:text="IFRA"
                 android:textColor="@color/white"
                 android:padding="5sp"
                 android:textSize="20sp"
