@@ -95,23 +95,28 @@ public class MainActivity3 extends AppCompatActivity {
                 if(id.getText().toString().equals("")){
                     Toast.makeText(MainActivity3.this, "아이디를 입력하시오", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(MainActivity3.this, "체크 후 경고 문자가 뜨지 않는다면\n아이디 사용가능 합니다.", Toast.LENGTH_SHORT).show();
-                    check_id(id.getText().toString());
-                }
+                else{ check_id(id.getText().toString());}
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                identify = id.getText().toString();
-                password = pw.getText().toString();
-                phone_num = pn.getText().toString();
-                if (phone_num.length() == 11) {
-                    phone_num = phone_num.substring(0, 3) + "-" + phone_num.substring(3, 7) + "-" + phone_num.substring(7);
+                if ((checkBox.isChecked() == true)&&(checkBox2.isChecked() == true)){
+                    identify = id.getText().toString();
+                    password = pw.getText().toString();
+                    phone_num = pn.getText().toString();
+                    if (phone_num.length() == 11) {
+                        phone_num = phone_num.substring(0, 3) + "-" + phone_num.substring(3, 7) + "-" + phone_num.substring(7);
+                    }
+                    //Sign_in(user_face); //얼굴 사진 나중에 AI에서 비교
+                    showFinalDialog(MainActivity3.this ,identify, password, name, idNumber, phone_num, gender, institution); //최종확인 다이얼로그
+                } else if ((checkBox.isChecked() == true)&&(checkBox2.isChecked() == false)) {
+                    Toast.makeText(MainActivity3.this, "이메일 인증 부탁드립니다.", Toast.LENGTH_SHORT).show();
+                } else if ((checkBox.isChecked() == false)&&(checkBox2.isChecked() == true)) {
+                    Toast.makeText(MainActivity3.this, "신분증 확인 부탁드립니다.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity3.this, "신분증 확인과 이메일 인증 부탁드립니다.", Toast.LENGTH_SHORT).show();
                 }
-                //Sign_in(user_face); //얼굴 사진 나중에 AI에서 비교
-                showFinalDialog(MainActivity3.this ,identify, password, name, idNumber, phone_num, gender, institution); //최종확인 다이얼로그
             }
         });
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -633,7 +638,12 @@ public class MainActivity3 extends AppCompatActivity {
                             });
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "아이디 사용가능 합니다.", Toast.LENGTH_SHORT).show();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "아이디 사용가능 합니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

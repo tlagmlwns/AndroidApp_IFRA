@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Random;
 
 public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.BoardViewHolder>{
     private List<Test_Alarm> dataList; //데이터 리스트
@@ -39,12 +40,13 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
                 // 새 다이얼로그를 띄워서 다른 레이아웃을 포함시킬 수 있습니다.
                 AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
                 LayoutInflater inflater = LayoutInflater.from(holder.itemView.getContext());
-                View dialogView = inflater.inflate(R.layout.activity_9_z_, null); // 새로운 레이아웃을 인플레이트합니다.
+                View dialogView = inflater.inflate(R.layout.activity_9_z_, null);
 
-                // 다이얼로그 레이아웃에 포함된 위젯들에 대한 작업을 할 수 있습니다.
-                // textView.setText("다이얼로그 내용 설정"); // 다이얼로그 내용을 동적으로 설정할 수 있습니다.
                 ImageView imageView = dialogView.findViewById(R.id.im_NF); // 이미지뷰를 찾습니다.
-                imageView.setImageResource(R.drawable.lucky7);
+                Random rand = new Random();
+                int num = rand.nextInt(2);
+                if (num == 0){imageView.setImageResource(R.drawable.lucky7);}
+                else{imageView.setImageResource(R.drawable.luck22);}
                 builder.setView(dialogView)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
