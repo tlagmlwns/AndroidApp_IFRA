@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +31,7 @@ import androidx.core.app.ActivityCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +40,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import org.json.JSONObject;
+import com.example.myapplication.MailSender;
 
 public class MainActivity3 extends AppCompatActivity {
     Single_ton_data mydata = Single_ton_data.getInstance();
@@ -49,9 +50,9 @@ public class MainActivity3 extends AppCompatActivity {
     private ActivityResultLauncher<Intent> cameraLauncher, cer_cameraLauncher;
     private String ocr_result;
     ImageView imageView, back;
-    Button certified, submit, check_id;
-    CheckBox checkBox;
-    EditText id, pw, pn;
+    Button certified, submit, check_id, Email_send, Email_check;
+    CheckBox checkBox, checkBox2;
+    EditText id, pw, pn, em, em_pj;
     String name, identify, password, phone_num, idNumber, gender, institution;
     File user_face;
     @Override
@@ -64,11 +65,20 @@ public class MainActivity3 extends AppCompatActivity {
         back = findViewById(R.id.ibtn_Backlog);
         certified = findViewById(R.id.btn_cer);
         checkBox = findViewById(R.id.cb_MJ);
+        checkBox2 = findViewById(R.id.cb_Email_MJ);
+        Email_send = findViewById(R.id.btn_Email_send_Num);
+        Email_check = findViewById(R.id.btn_Email_MJ_check);
         submit = findViewById(R.id.btn_loginGo);
         check_id = findViewById(R.id.btn_overlap);
         id = findViewById(R.id.etv_ID);
         pw = findViewById(R.id.etv_pw);
         pn = findViewById(R.id.PhoneNum);
+        em = findViewById(R.id.etv_Email);
+        em_pj = findViewById(R.id.etv_Email_MJ);
+
+        Random rand = new Random();
+        int num = rand.nextInt(10000);
+        String snum = String.valueOf(num);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +117,25 @@ public class MainActivity3 extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
         }
-
+        Email_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Email = em.getText().toString();
+                add_sms(Email, snum);
+                Toast.makeText(MainActivity3.this, "인증번호 전송 완료", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Email_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Email_MJnum = em_pj.getText().toString();
+                if (Email_MJnum.equals(snum))
+                    {  Toast.makeText(MainActivity3.this, "이메일 인증 완료", Toast.LENGTH_SHORT).show();
+                        checkBox2.setChecked(true);}
+                else{  Toast.makeText(MainActivity3.this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
+                        checkBox2.setChecked(false);}
+            }
+        });
         //얼굴사진카메라
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -617,5 +645,7 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
     }
-
+    public void add_sms(String mail,String num){
+        new MailSender().sendEmail(mail, num);
+    }
 }
