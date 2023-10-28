@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="로그 기록"
-                android:textSize="24sp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <LinearLayout

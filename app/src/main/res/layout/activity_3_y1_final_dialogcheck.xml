@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="최종 정보 확인"
-        android:textSize="24sp"
+        android:textSize="24dp"
         android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"

@@ -148,7 +148,7 @@
                     android:layout_height="match_parent"
                     android:hint="name"
                     android:paddingLeft="5dp"
-                    android:textSize="19sp"
+                    android:textSize="18dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -184,7 +184,7 @@
                         android:layout_height="match_parent"
                         android:hint="id"
                         android:paddingLeft="5dp"
-                        android:textSize="19sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -210,7 +210,7 @@
                         android:layout_height="match_parent"
                         android:hint="password"
                         android:paddingLeft="5dp"
-                        android:textSize="19sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -247,7 +247,7 @@
                         android:layout_height="match_parent"
                         android:hint="group"
                         android:paddingLeft="5dp"
-                        android:textSize="19sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -273,7 +273,7 @@
                         android:layout_height="match_parent"
                         android:hint="num3-num4-num4"
                         android:paddingLeft="5dp"
-                        android:textSize="19sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
