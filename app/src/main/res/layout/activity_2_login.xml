@@ -47,11 +47,12 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:paddingLeft="5dp"
             android:text="아이디"
-            android:textStyle="bold"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/InputID"
@@ -68,11 +69,12 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:paddingLeft="5dp"
             android:text="비밀번호"
-            android:textStyle="bold"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/InputPassword"
@@ -94,6 +96,7 @@
                 android:layout_height="22dp"
                 android:gravity="left"
                 android:text="처음이신가요?"
+                android:paddingLeft="5dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -111,6 +114,7 @@
                 android:autoLink="web"
                 android:gravity="right"
                 android:text="회원가입"
+                android:paddingRight="5dp"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold" />
 
