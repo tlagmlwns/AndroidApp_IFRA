@@ -25,7 +25,7 @@
 
                 <TextView
                     android:id="@+id/tv_mm_fn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="파일이름 : "
@@ -60,7 +60,7 @@
 
                 <TextView
                     android:id="@+id/tv_mm_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="날짜 : "
