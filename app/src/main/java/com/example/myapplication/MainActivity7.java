@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -22,7 +24,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import okhttp3.Call;
@@ -62,6 +66,7 @@ public class MainActivity7 extends AppCompatActivity {
         OUT_lr = findViewById(R.id.tv_LR_OUTV);
         S_Date1 = findViewById(R.id.tv_LselectDate_result);
         S_Date2 = findViewById(R.id.tv_LselectDate_result2);
+        //-------------------------------------------------
         ulc_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { finish();}
@@ -118,6 +123,14 @@ public class MainActivity7 extends AppCompatActivity {
                         Log.d("JSON Response: ", "inner_time: " + inner_time);
                         Log.d("JSON Response: ", "outter_time: " + outter_time);
 
+                        if(state.equals("")||inner_time.equals("")){
+                            IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
+                            IN_lr.setText("결과없음"); IN_lr.setTextColor(Color.GRAY);
+
+                            S_Date2.setText("");
+                            OUT_stats.setText(""); OUT_lr.setTextColor(Color.GRAY);
+                            OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
+                        }
                         IN_time = inner_time;
                         OUT_time = outter_time;
                         State = state;
@@ -169,10 +182,14 @@ public class MainActivity7 extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
         try {
-            Date date = dateFormat.parse(dateString); // 문자열을 Date 객체로 파싱
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 ", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
-            String outputDateString = outputFormat.format(date);
-            logDate = outputDateString;
+            if (dateString != null && !dateString.isEmpty()) {
+                Date date = dateFormat.parse(dateString); // 문자열을 Date 객체로 파싱
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 ", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
+                String outputDateString = outputFormat.format(date);
+                logDate = outputDateString;
+            } else {
+                logDate = "";
+            }
         } catch (ParseException e) {
             e.printStackTrace();
             // 예외 처리 코드 추가

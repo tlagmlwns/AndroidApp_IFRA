@@ -78,7 +78,7 @@
         <LinearLayout
             android:id="@+id/infoes"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="310dp"
             android:background="#CDE6E5E5"
             android:orientation="vertical"
             android:padding="14dp">
@@ -261,8 +261,9 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
         </LinearLayout>
+
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
