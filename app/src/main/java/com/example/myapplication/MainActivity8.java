@@ -159,13 +159,24 @@ public class MainActivity8 extends AppCompatActivity {
                                 Log.d("JSON Response: ", "confidence: " + confidence);
                                 Log.d("JSON Response: ", "user_id: " + user_id);
 
-                                if (inner_time.equals("null")) {inner_time = "";}
-                                if (outter_time.equals("null")) {outter_time = "";}
-                                if (state.equals("null")) {state = "";}
-                                if (confidence.equals("null")) {confidence = "";}
-                                if (user_id.equals("null")) {user_id = "";}
+                                if (inner_time.equals("null")) {inner_time = "";}                   //it = null 일때
+                                if (outter_time.equals("null")) {outter_time = "";}                 //ot = null 일때
+                                if (state.equals("null")) {state = "";}                             //state = null 일때
 
-                                AL_Datas.add(new All_Log(inner_time,
+                                if (confidence.equals("null")) {confidence = "";}                   //1. confidence = null 일때
+                                else if (confidence.startsWith("[") && confidence.endsWith("]")) {  //2. confidence = [0.666...] 시작일때
+                                    String cleanedInput = confidence.substring(1, confidence.length() - 1);
+                                    double value = Double.parseDouble(cleanedInput);
+                                    double roundedValue = Math.round(value * 100.0) / 100.0;
+                                    confidence = String.valueOf(roundedValue);}
+                                else if (confidence.startsWith("0.")) {                             //3. confidence = 0.666... 시작일때
+                                    double value = Double.parseDouble(confidence);
+                                    double roundedValue = Math.round(value * 100.0) / 100.0;
+                                    confidence = String.valueOf(roundedValue);}
+
+                                if (user_id.equals("null")) {user_id = "";}                         //user_id = null 일때
+
+                                AL_Datas.add(new All_Log(inner_time,                                //recycerView 추가
                                                          outter_time,
                                                          confidence,
                                                          user_id));
@@ -173,8 +184,7 @@ public class MainActivity8 extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // 메인 스레드에서 UI 작업을 수행
-                                    AL_Adapter = new All_LogAdapter(AL_Datas);
+                                    AL_Adapter = new All_LogAdapter(AL_Datas);                      // 메인 스레드에서 UI 작업을 수행
                                     recyclerView.setAdapter(AL_Adapter);
                                 }
                             });
