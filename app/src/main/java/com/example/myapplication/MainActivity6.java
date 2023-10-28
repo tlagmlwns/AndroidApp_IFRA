@@ -145,6 +145,7 @@ public class MainActivity6 extends AppCompatActivity {
         E_ID.setText(edID);
 
         E_PW = viewV1.findViewById(R.id.etv_mypage_ePW);
+        edPW = "";
         E_PW.setText(edPW);
 
         S_Grp = viewV1.findViewById(R.id.sp_mypage_grp);
