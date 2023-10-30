@@ -44,9 +44,10 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
 
                 ImageView imageView = dialogView.findViewById(R.id.im_NF); // 이미지뷰를 찾습니다.
                 Random rand = new Random();
-                int num = rand.nextInt(2);
-                if (num == 0){imageView.setImageResource(R.drawable.lucky7);}
-                else{imageView.setImageResource(R.drawable.luck22);}
+                int num = rand.nextInt(3);
+                if (num == 0){imageView.setImageResource(R.drawable.op1);}
+                else if (num == 1) {imageView.setImageResource(R.drawable.op2);}
+                else{imageView.setImageResource(R.drawable.op3);}
                 builder.setView(dialogView)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

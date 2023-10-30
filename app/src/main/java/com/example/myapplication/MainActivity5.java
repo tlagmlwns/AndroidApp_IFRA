@@ -50,7 +50,6 @@ public class MainActivity5 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent manager=new Intent(getApplicationContext(), MainActivity8.class);
-                Toast.makeText(getApplicationContext(), "준비 중 입니다.", Toast.LENGTH_SHORT).show();
                 startActivity(manager);
             }
         });

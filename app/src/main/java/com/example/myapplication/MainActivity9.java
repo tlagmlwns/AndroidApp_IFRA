@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,12 +39,13 @@ public class MainActivity9 extends AppCompatActivity {
         F5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "새로고침 준비중입니다.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "새로고침 준비중입니다.", Toast.LENGTH_SHORT).show();
                 if (!t_aDatas.isEmpty()) {t_aDatas.clear();}
                 Random rand = new Random();
                 int num = rand.nextInt(10);
+                LocalDate currentDate = LocalDate.now(); //java 8 이상
                 for(int i =0; i<=num; i++){
-                    t_aDatas.add(new Test_Alarm("new_"+i,"2023-10-23"));
+                    t_aDatas.add(new Test_Alarm("new_face_"+i,currentDate.toString()));
                 }
                 t_aAdapter = new Test_AlarmAdapter(t_aDatas);
                 recyclerView.setAdapter(t_aAdapter);
