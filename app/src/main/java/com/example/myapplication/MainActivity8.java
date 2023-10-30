@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import okhttp3.Call;
@@ -44,7 +45,6 @@ public class MainActivity8 extends AppCompatActivity {
     Spinner Month, dayOM;
     ImageButton ALSearch;
     String yyyy, mm, dom; //서버에 요청조건
-    String in_T, out_T, statE, confidencE, user_iD;//서버의 결과
     RecyclerView recyclerView;
     All_LogAdapter AL_Adapter;
     List<All_Log> AL_Datas;
@@ -102,8 +102,13 @@ public class MainActivity8 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 yyyy = Year.getText().toString();
-                if (!AL_Datas.isEmpty()) {AL_Datas.clear();}
-                All_log(yyyy, mm, dom);
+                if(yyyy.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "년도를 입력하시오.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    if (!AL_Datas.isEmpty()) {AL_Datas.clear();}
+                    All_log(yyyy, mm, dom);
+                }
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -176,8 +181,8 @@ public class MainActivity8 extends AppCompatActivity {
 
                                 if (user_id.equals("null")) {user_id = "";}                         //user_id = null 일때
 
-                                AL_Datas.add(new All_Log(inner_time,                                //recycerView 추가
-                                                         outter_time,
+                                AL_Datas.add(new All_Log(Datefilter(inner_time),                    //recycerView 추가
+                                                         Datefilter(outter_time),
                                                          confidence,
                                                          user_id));
                             }
@@ -190,9 +195,11 @@ public class MainActivity8 extends AppCompatActivity {
                             });
                         } else if (status.equals("no_logs")) {
                             // 로그 없음 처리
+                            updateRecyclerView(new ArrayList<>());
                             Log.d("JSON Response: ", "No logs available for the given date.");
                         } else if (status.equals("error")) {
                             // 오류 처리
+                            updateRecyclerView(new ArrayList<>());
                             Log.e("Response Error", "Error occurred while fetching logs.");
                         }
 
@@ -207,66 +214,33 @@ public class MainActivity8 extends AppCompatActivity {
             }
         });
     }
+    public String Datefilter(String time_data){
+        //String dateString = "Wed, 18 Oct 2023 09:10:00 GMT";
+        String dateString = time_data;
+        String Result = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
-    /*
-    public void All_log (String year, String month, String dayofmonth){
-        String senddate = (year)+"-"+(month)+"-"+(dayofmonth);
-
-        Log.d("JSON Response: ", "date: " + senddate); //1. 이거 까진 잘 들어가는데
-
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("date", String.valueOf(senddate))
-                .build();
-
-        Request request = new Request.Builder()
-                .url("http://15.164.120.162:5000//all_log")
-                .post(requestBody)
-                .build();
-
-        OkHttpClient client = new OkHttpClient();
-        client.newCall(request).enqueue(new Callback() {
+        try {
+            if (dateString != null && !dateString.isEmpty()) {
+                Date date = dateFormat.parse(dateString); // 문자열을 Date 객체로 파싱
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 EEE, HH시 mm분 ss초", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
+                String outputDateString = outputFormat.format(date);
+                Result = outputDateString;
+            } else { Result = "";}
+        } catch (ParseException e) {
+            e.printStackTrace();}
+        return Result;
+    }
+    private void updateRecyclerView(List<My_Log> dataList) {
+        AL_Datas.clear();
+        AL_Datas.add(new All_Log("","","","")); //받은 데이터가 없을시.
+        runOnUiThread(new Runnable() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
-
-                    try {
-                        JSONObject json = new JSONObject(responseBody);
-
-                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
-                        String status = json.getString("status");
-                        String inner_time = json.getString("inner_time"); //2. 이건 안나오네
-                        String outter_time = json.getString("outter_time");
-                        String state = json.getString("state");
-                        int confidence = json.getString("confidence");
-                        String user_id = json.getString("user_id");
-
-                        Log.d("JSON Response: ", "status: " + status);
-                        Log.d("JSON Response: ", "inner_time: " + inner_time);
-                        Log.d("JSON Response: ", "outter_time: " + outter_time);
-                        Log.d("JSON Response: ", "state: " + state);
-                        Log.d("JSON Response: ", "confidence: " + confidence);
-                        Log.d("JSON Response: ", "user_id: " + user_id);
-
-                        if (inner_time == null) {in_T = "";} else{ in_T = inner_time;}
-                        if (outter_time == null) {out_T = "";} else{ out_T = outter_time;}
-                        if (state == null) {statE = "";} else{ statE = state;}
-                        if (confidence == null) {confidencE = "";} else{ confidencE = confidence;}
-                        if (user_id == null) {user_iD = "";} else{ user_iD = user_id;}
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // 응답이 성공적이지 않은 경우에 대한 처리
-                    Log.e("Response Error", "Response Code: " + response.code());
-                }
+            public void run() {
+                AL_Adapter = new All_LogAdapter(AL_Datas);
+                recyclerView.setAdapter(AL_Adapter);
+                Toast.makeText(getApplicationContext(), "데이터가 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
-    }*/
+    }
 }

@@ -196,7 +196,8 @@
             android:id="@+id/list_rv_Alllog"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:scrollbars="vertical"/>
 
         <LinearLayout
             android:layout_width="match_parent"
