@@ -83,70 +83,43 @@
             android:orientation="vertical"
             android:padding="14dp">
 
-            <TextView
-                android:id="@+id/tv_LogResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="로그 기록"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:orientation="horizontal"></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/IN"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="35dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_LogResult"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_Lstats_IN"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:text="상태"
-                        android:textColor="#919191"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/tv_Lstats_IN_result"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:hint="입/퇴"
-                        android:paddingLeft="5dp"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="로그 기록"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_LselectDate_IN"
                         android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:text="선택 날짜"
-                        android:textColor="#919191"
-                        android:textSize="15dp" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="선택 날짜 : "
+                        android:textColor="#5E5D5D"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_LselectDate_result"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:hint="yyyy년 mm월 dd일"
                         android:paddingLeft="5dp"
                         android:textSize="15dp"
@@ -155,115 +128,20 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textView14"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:orientation="horizontal"></LinearLayout>
+                android:layout_height="10dp" />
 
-            <LinearLayout
-                android:id="@+id/IN_RESULT"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_rv_mylog"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:background="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_LR_INV"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="5dp"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:orientation="horizontal"></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/OUT"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_Lstats_OUT"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:text="상태"
-                        android:textColor="#919191"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/tv_Lstats_OUT_result"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:hint="입/퇴"
-                        android:paddingLeft="5dp"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_LselectDate_OUT"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:text="선택 날짜"
-                        android:textColor="#919191"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/tv_LselectDate_result2"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:hint="yyyy년 mm월 dd일"
-                        android:paddingLeft="5dp"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:orientation="horizontal"></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/OUT_RESULT"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_LR_OUTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="5dp"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
         </LinearLayout>
-
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

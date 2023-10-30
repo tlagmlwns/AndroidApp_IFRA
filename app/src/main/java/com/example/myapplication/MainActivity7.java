@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -41,9 +43,12 @@ public class MainActivity7 extends AppCompatActivity {
     Single_ton_data mydata = Single_ton_data.getInstance();
     ImageButton ulc_Mypage, ulc_Back;
     CalendarView calendarview;
-    TextView IN_stats, IN_lr, OUT_stats, OUT_lr, S_Date1, S_Date2;
+    TextView S_Date;
     String State, IN_time, OUT_time; //server data
     String selectedDate, logDate;
+    RecyclerView recyclerView;
+    My_LogAdapter ML_Adapter;
+    List<My_Log> ML_Datas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,14 +64,9 @@ public class MainActivity7 extends AppCompatActivity {
         calendar.set(2023, 9, 1);
         long millis = calendar.getTimeInMillis();
         calendarview.setDate(millis);
-        //-------------------------------------------------
-        IN_stats = findViewById(R.id.tv_Lstats_IN_result);
-        IN_lr = findViewById(R.id.tv_LR_INV);
-        OUT_stats = findViewById(R.id.tv_Lstats_OUT_result);
-        OUT_lr = findViewById(R.id.tv_LR_OUTV);
-        S_Date1 = findViewById(R.id.tv_LselectDate_result);
-        S_Date2 = findViewById(R.id.tv_LselectDate_result2);
-        //-------------------------------------------------
+        S_Date = findViewById(R.id.tv_LselectDate_result);
+        recyclerView = findViewById(R.id.list_rv_mylog);
+        ML_Datas = new ArrayList<>();
         ulc_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { finish();}
@@ -85,10 +85,12 @@ public class MainActivity7 extends AppCompatActivity {
                 // 선택된 날짜 정보를 가지고 원하는 동작 수행
                 String senddate = Integer.toString(year) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(dayOfMonth) ;
                 selectedDate = year + "년 " + (month + 1) + "월 " + dayOfMonth + "일 ";
-                S_Date1.setText(selectedDate);
+                S_Date.setText(selectedDate);
+                if (!ML_Datas.isEmpty()) {ML_Datas.clear();}
                 get_log(senddate);
             }
         });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
     public void get_log(String sedate) {
         RequestBody requestBody = new MultipartBody.Builder()
@@ -114,85 +116,88 @@ public class MainActivity7 extends AppCompatActivity {
                     try {
                         JSONObject json = new JSONObject(responseBody);
 
-                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
-                        String status = json.getString("status"); //요청에 대한 상태
-                        String inner_time = json.getString("inner_time"); //출근
-                        String outter_time = json.getString("outter_time"); //퇴근
-                        String state = json.getString("state"); // 상태(입 /퇴)
-                        Log.d("JSON Response: ", "status: " + status);
-                        Log.d("JSON Response: ", "inner_time: " + inner_time);
-                        Log.d("JSON Response: ", "outter_time: " + outter_time);
+                        // "status" 키를 사용하여 응답 상태 확인
+                        String status = json.getString("status");
+                        if (status.equals("success")) {
+                            JSONArray logsArray = json.getJSONArray("logs");
 
-                        if(state.equals("")||inner_time.equals("")){
-                            IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
-                            IN_lr.setText("결과없음"); IN_lr.setTextColor(Color.GRAY);
+                            for (int i = 0; i < logsArray.length(); i++) {
+                                JSONObject logObject = logsArray.getJSONObject(i);
+                                String state = logObject.getString("state");
+                                String inner_time = logObject.getString("inner_time");
+                                String outter_time = logObject.getString("outter_time");
 
-                            S_Date2.setText("");
-                            OUT_stats.setText(""); OUT_lr.setTextColor(Color.GRAY);
-                            OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
+                                // 로그 정보를 처리하는 코드 추가
+                                Log.d("JSON Response: ", "status: " + status);
+                                Log.d("JSON Response: ", "inner_time: " + inner_time);
+                                Log.d("JSON Response: ", "outter_time: " + outter_time);
+                                Log.d("JSON Response: ", "state: " + state);
+
+                                if (inner_time.equals("null")) {inner_time = "";}                   //it = null 일때
+                                if (outter_time.equals("null")) {outter_time = "";}                 //ot = null 일때
+                                if (state.equals("null")) {state = "";}                             //state = null 일때
+
+                                IN_time = inner_time;
+                                OUT_time = outter_time;
+                                State = state;
+
+                                ML_Datas.add(new My_Log(Datefilter(inner_time), Datefilter(outter_time), state));
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ML_Adapter = new My_LogAdapter(ML_Datas);                       // 메인 스레드에서 UI 작업을 수행
+                                    recyclerView.setAdapter(ML_Adapter);
+                                }
+                            });
+                        } else if (status.equals("no_logs")) {
+                            // 로그 없음 처리
+                            updateRecyclerView(new ArrayList<>());
+                            Log.d("JSON Response: ", "No logs available for the given date.");
+                        } else if (status.equals("error")) {
+                            // 오류 처리
+                            updateRecyclerView(new ArrayList<>());
+                            Log.e("Response Error", "Error occurred while fetching logs.");
                         }
-                        IN_time = inner_time;
-                        OUT_time = outter_time;
-                        State = state;
-                    } catch (Exception e) {
+
+                    } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.e("JSON Error", "Error parsing JSON response: " + e.getMessage());
                     }
-                } else { Log.e("Response Error", "Response Code: " + response.code());}
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Datefilter(IN_time);
-
-                        if(selectedDate.equals(logDate)){
-                            if(State.equals("퇴장")){ //최종 State가 퇴장일때
-                                IN_stats.setText("입장"); IN_stats.setTextColor(Color.BLUE); //입장시 로그
-                                IN_lr.setText(IN_time); IN_lr.setTextColor(Color.BLACK);
-
-                                S_Date2.setText(selectedDate);
-                                OUT_stats.setText(State); OUT_stats.setTextColor(Color.RED); //퇴장시 로그
-                                OUT_lr.setText(OUT_time); OUT_lr.setTextColor(Color.BLACK);
-                            }
-                            else{ //최종 State가 입장일때
-                                IN_stats.setText(State); IN_stats.setTextColor(Color.BLUE); //입장시 로그
-                                IN_lr.setText(IN_time); IN_lr.setTextColor(Color.BLACK);
-
-                                S_Date2.setText("");
-                                OUT_stats.setText(""); OUT_stats.setTextColor(Color.RED); //퇴장시 로그
-                                OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
-                            }
-                        }
-                        else{ //아예 Nodata일때
-                            IN_stats.setText(""); IN_stats.setTextColor(Color.GRAY);
-                            IN_lr.setText("결과없음"); IN_lr.setTextColor(Color.GRAY);
-
-                            S_Date2.setText("");
-                            OUT_stats.setText(""); OUT_lr.setTextColor(Color.GRAY);
-                            OUT_lr.setText(""); OUT_lr.setTextColor(Color.GRAY);
-
-                        }
-                    }
-                });
+                } else {
+                    // 응답이 성공적이지 않은 경우에 대한 처리
+                    Log.e("Response Error", "Response Code: " + response.code());
+                }
             }
         });
     }
-    public void Datefilter(String time_data){
+    public String Datefilter(String time_data){
         //String dateString = "Wed, 18 Oct 2023 09:10:00 GMT";
         String dateString = time_data;
+        String Result = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
         try {
             if (dateString != null && !dateString.isEmpty()) {
                 Date date = dateFormat.parse(dateString); // 문자열을 Date 객체로 파싱
-                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy년 MM월 dd일 ", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
+                SimpleDateFormat outputFormat = new SimpleDateFormat("HH시 mm분 ss초", Locale.KOREA);  // 필요에 따라 다른 형식으로 날짜를 출력
                 String outputDateString = outputFormat.format(date);
-                logDate = outputDateString;
-            } else {
-                logDate = "";
-            }
+                Result = outputDateString;
+            } else { Result = "";}
         } catch (ParseException e) {
-            e.printStackTrace();
-            // 예외 처리 코드 추가
-        }
+            e.printStackTrace();}
+        return Result;
+    }
+    private void updateRecyclerView(List<My_Log> dataList) {
+        ML_Datas.clear();
+        ML_Datas.add(new My_Log("", "", "")); //받은 데이터가 없을시.
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ML_Adapter = new My_LogAdapter(ML_Datas);
+                recyclerView.setAdapter(ML_Adapter);
+                Toast.makeText(getApplicationContext(), "데이터가 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
