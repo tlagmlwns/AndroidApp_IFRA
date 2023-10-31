@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +25,7 @@ public class MainActivity5 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
-        setContentView(R.layout.activity_5_mmain);
+        setContentView(R.layout.activity_5_manager_main);
 
         mm_Mypage = findViewById(R.id.ibtn_mypage);
         Test = findViewById(R.id.btn_Test);
@@ -39,14 +38,14 @@ public class MainActivity5 extends AppCompatActivity {
                 startActivity(mmmypage);
             }
         });
-        Test.setOnClickListener(new View.OnClickListener() {
+        Test.setOnClickListener(new View.OnClickListener() { //Test_NF 바로가기(목업)
             @Override
             public void onClick(View view) {
                 Intent Test = new Intent(getApplicationContext(), MainActivity9.class);
                 startActivity(Test);
             }
         });
-        Manage.setOnClickListener(new View.OnClickListener() {
+        Manage.setOnClickListener(new View.OnClickListener() { //관리페이지(All_Log) 바로가기
             @Override
             public void onClick(View view) {
                 Intent manager=new Intent(getApplicationContext(), MainActivity8.class);
