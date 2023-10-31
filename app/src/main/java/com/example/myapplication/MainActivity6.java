@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,15 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabItem;
-
 import org.json.JSONObject;
-
-import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -69,20 +64,19 @@ public class MainActivity6 extends AppCompatActivity {
         ibtn_Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish(); // 현재 액티비티를 종료하고 이전 화면으로 돌아가기
-            }
+                finish();
+            } // 현재 액티비티를 종료하고 이전 화면으로 돌아가기
         });
         if (Tab_myinfo != null) {
             Tab_myinfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "새로고침 완료", Toast.LENGTH_SHORT).show();
-                    // 이곳에 클릭 이벤트 핸들러 코드를 추가하세요.
                 }
             });
         } else {
             Log.e("MainActivity6", "TabItem is null. Check the ID in your XML layout.");
-            Toast.makeText(getApplicationContext(), "탭버튼이 null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "탭버튼이 null", Toast.LENGTH_SHORT).show();
         }
         edit_Mypageinfo.setOnClickListener(new View.OnClickListener() {
 
@@ -94,24 +88,21 @@ public class MainActivity6 extends AppCompatActivity {
                             public void onValues_Edited(String editedName, String editedId, String editedPW, String editedGroup, String editedPnum) {
                                 // 사용자가 수정한 값을 사용
                                 // 이곳에서 수정된 값을 사용하거나 처리
-                                // editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
-                                // 예시로 수정된 이름을 Toast 메시지로 출력하는 예시:
                                 Toast.makeText(MainActivity6.this, "수정완료 ", Toast.LENGTH_SHORT).show();
-
                             }
                         });
             }
         });
     }
-    public void showMyInfo(){
-        tv_Name = findViewById(R.id.tv_Name);
-        tv_name = findViewById(R.id.tv_mypage_rName);
-        tv_id = findViewById(R.id.tv_mypage_rID);
-        tv_pw = findViewById(R.id.tv_mypage_rPW);
-        tv_grp = findViewById(R.id.tv_mypage_rGroup);
-        tv_pnum = findViewById(R.id.tv_mypage_rPNum);
+    public void showMyInfo(){ //나의정보 확인
+        tv_Name = findViewById(R.id.tv_Name); //이름
+        tv_name = findViewById(R.id.tv_mypage_rName); //나의정보 이름
+        tv_id = findViewById(R.id.tv_mypage_rID); //나의정보 아이디
+        tv_pw = findViewById(R.id.tv_mypage_rPW); //나의정보 비번
+        tv_grp = findViewById(R.id.tv_mypage_rGroup); //나의정보 그룹
+        tv_pnum = findViewById(R.id.tv_mypage_rPNum); //나의정보 폰번
 
-        name = mydata.getUser_name();
+        name = mydata.getUser_name(); //sgt_mydata에서 가져옴
         id = mydata.getUser_id();
         pw = mydata.getUser_pass();
         if (mydata.getUser_group().equals("1")){grp = "Class C";}
@@ -119,7 +110,7 @@ public class MainActivity6 extends AppCompatActivity {
         else if (mydata.getUser_group().equals("")) {grp = "none";}
         else {grp = mydata.getUser_group();}
         pnum = mydata.getUser_phoneNum();
-        if (pnum.length() == 11) {
+        if (pnum.length() == 11) { //자리수 11개일씨 - 추가
             pnum = pnum.substring(0, 3) + "-" + pnum.substring(3, 7) + "-" + pnum.substring(7);
         }
         tv_Name.setText(name);
@@ -137,7 +128,7 @@ public class MainActivity6 extends AppCompatActivity {
     public void showEditableDialog(View.OnClickListener context, String edName, String edID, //v2
                                    String edPW, String edGroup, String edPNum, final MainActivity6.OnValuesEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View viewV1 = inflater.inflate(R.layout.activity_6_x1_mypageedit, null);
+        View viewV1 = inflater.inflate(R.layout.activity_6_mypage_edit, null);
         E_Name = viewV1.findViewById(R.id.etv_mypage_ename);
         E_Name.setText(edName);
 
@@ -145,7 +136,7 @@ public class MainActivity6 extends AppCompatActivity {
         E_ID.setText(edID);
 
         E_PW = viewV1.findViewById(R.id.etv_mypage_ePW);
-        edPW = "";
+        edPW = ""; //해쉬처리한 비번은 복호화를 못하므로 아예 초기화
         E_PW.setText(edPW);
 
         S_Grp = viewV1.findViewById(R.id.sp_mypage_grp);
@@ -159,7 +150,6 @@ public class MainActivity6 extends AppCompatActivity {
                 E_Grp = edGroup.toString();
                 E_Grp = parentView.getItemAtPosition(position).toString();
                 if (E_Grp == "미정"){ E_Grp="none"; }
-                //Toast.makeText(getApplicationContext(), "선택: " + E_Grp, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -204,23 +194,23 @@ public class MainActivity6 extends AppCompatActivity {
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       Cancellation();
+                        Cancellation();
                     }
                 })
-                .show(); // 다이얼로그 표시
+                .show(); //다이얼로그 표시
     }
     public interface OnValuesEditedListener {
         void onValues_Edited(String editedName, String editedId, String editedPW, String editedGroup, String editedPnum);
     }
     private void Confirmation() {
-        // 안내문자서 확인 클릭시
+        //안내문자서 확인 클릭시
         Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
     }
     private void Cancellation() {
-        // 안내문자서 취소 클릭시
+        //안내문자서 취소 클릭시
         Toast.makeText(getApplicationContext(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
     }
-    public void Send2_edinfo() { // 서버로 보내기(수정시)
+    public void Send2_edinfo() { //정보수정(서버로 보내기)
         if (old_id == null) {old_id = id;}
         if (grp.equals("Class C")) { grp_num = "1";}
         else if (grp.equals("Class Java")) { grp_num = "2";}
@@ -236,7 +226,7 @@ public class MainActivity6 extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://15.164.120.162:5000//alter") // 여기 sign_up 말고 딴거 넣어야됨
+                .url("http://15.164.120.162:5000//alter")
                 .post(requestBody)
                 .build();
 
