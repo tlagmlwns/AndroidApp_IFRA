@@ -53,7 +53,7 @@ public class MainActivity8 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
-        setContentView(R.layout.activity_8_managerpage);
+        setContentView(R.layout.activity_8_manage_page);
 
         mpBack = findViewById(R.id.ibtn_mpBack);
         Year = findViewById(R.id.etv_mm_YEAR);
@@ -72,26 +72,24 @@ public class MainActivity8 extends AppCompatActivity {
         Month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                mm = mms[position].toString(); // 사용자가 선택한 항목의 텍스트 가져오기
-                //Toast.makeText(getApplicationContext(), "선택된 항목: " + mm, Toast.LENGTH_SHORT).show();
+                mm = mms[position].toString(); //사용자가 선택한 항목의 텍스트 가져오기
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                mm = ""; // 또는 다른 기본값 설정
+                mm = ""; //또는 다른 기본값 설정
                 Toast.makeText(getApplicationContext(), "month를 선택하시오", Toast.LENGTH_SHORT).show();
             }
         });
         String[] doms = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-                         "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-                         "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-                         "31"};
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+                "31"};
         ArrayAdapter<String> doms_adapter  = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, doms);
         dayOM.setAdapter(doms_adapter);
         dayOM.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                dom = doms[position].toString(); // 사용자가 선택한 항목의 텍스트 가져오기
-                //Toast.makeText(getApplicationContext(), "선택된 항목: " + dom, Toast.LENGTH_SHORT).show();
+                dom = doms[position].toString(); //사용자가 선택한 항목의 텍스트 가져오기
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -120,11 +118,11 @@ public class MainActivity8 extends AppCompatActivity {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("date", senddate) // 문자열 형태로 전송
+                .addFormDataPart("date", senddate) //문자열 형태로 전송
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://15.164.120.162:5000/all_log") // URL 오타 수정
+                .url("http://15.164.120.162:5000/all_log") //URL 오타 수정
                 .post(requestBody)
                 .build();
 
@@ -143,8 +141,7 @@ public class MainActivity8 extends AppCompatActivity {
                     try {
                         JSONObject json = new JSONObject(responseBody);
 
-                        // "status" 키를 사용하여 응답 상태 확인
-                        String status = json.getString("status");
+                        String status = json.getString("status"); //"status" 키를 사용하여 응답 상태 확인
                         if (status.equals("success")) {
                             JSONArray logsArray = json.getJSONArray("logs");
 
@@ -182,9 +179,9 @@ public class MainActivity8 extends AppCompatActivity {
                                 if (user_id.equals("null")) {user_id = "";}                         //user_id = null 일때
 
                                 AL_Datas.add(new All_Log(Datefilter(inner_time),                    //recycerView 추가
-                                                         Datefilter(outter_time),
-                                                         confidence,
-                                                         user_id));
+                                        Datefilter(outter_time),
+                                        confidence,
+                                        user_id));
                             }
                             runOnUiThread(new Runnable() {
                                 @Override
