@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class My_LogAdapter extends RecyclerView.Adapter<My_LogAdapter.BoardViewHolder> {
@@ -25,7 +23,7 @@ public class My_LogAdapter extends RecyclerView.Adapter<My_LogAdapter.BoardViewH
     @Override
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //ViewHolder 객체 생성 후 리턴.
-        return new My_LogAdapter.BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_7_x1_, parent, false));
+        return new My_LogAdapter.BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_7_my_log_custom, parent, false));
     }
 
     public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
@@ -47,4 +45,3 @@ public class My_LogAdapter extends RecyclerView.Adapter<My_LogAdapter.BoardViewH
         }
     }
 }
-

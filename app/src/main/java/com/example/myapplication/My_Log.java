@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-public class My_Log {
+public class My_Log { //나의로그 확인
     private String inner_time;
     private String outter_time;
     private String state;
