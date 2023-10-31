@@ -1,8 +1,6 @@
 package com.example.myapplication;
 
-import android.widget.Button;
-
-public class Test_Alarm {
+public class Test_Alarm { //Test_NF
     private String filename;
     private String filedate;
     //사진 추가 해야됨

@@ -25,7 +25,7 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
     @Override
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //ViewHolder 객체 생성 후 리턴.
-        return new BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_9_y_warning_no, parent, false));
+        return new BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_9_test_nf_warning, parent, false));
     }
     @Override
     public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
@@ -36,22 +36,19 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
         holder.Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 버튼이 클릭되었을 때 실행할 코드 작성
-                // 새 다이얼로그를 띄워서 다른 레이아웃을 포함시킬 수 있습니다.
                 AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
                 LayoutInflater inflater = LayoutInflater.from(holder.itemView.getContext());
-                View dialogView = inflater.inflate(R.layout.activity_9_z_, null);
+                View dialogView = inflater.inflate(R.layout.activity_9_test_nf_picture, null);
 
-                ImageView imageView = dialogView.findViewById(R.id.im_NF); // 이미지뷰를 찾습니다.
+                ImageView imageView = dialogView.findViewById(R.id.im_NF); //imageView
                 Random rand = new Random();
                 int num = rand.nextInt(3);
-                if (num == 0){imageView.setImageResource(R.drawable.op1);}
-                else if (num == 1) {imageView.setImageResource(R.drawable.op2);}
-                else{imageView.setImageResource(R.drawable.op3);}
+                if (num == 0){imageView.setImageResource(R.drawable.op1);} //1
+                else if (num == 1) {imageView.setImageResource(R.drawable.op2);} //2
+                else{imageView.setImageResource(R.drawable.op3);} //3
                 builder.setView(dialogView)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // 확인 버튼을 눌렀을 때의 동작
                                 dialog.dismiss();
                             }
                         });
@@ -69,8 +66,7 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
     }
 
     public class BoardViewHolder extends RecyclerView.ViewHolder {
-        //ViewHolder 에 필요한 데이터들
-        private TextView filename;
+        private TextView filename; //ViewHolder 에 필요한 데이터들
         private TextView filedate;
         private ImageButton Picture;
         public BoardViewHolder(@NonNull View itemView) {
@@ -81,4 +77,3 @@ public class Test_AlarmAdapter extends RecyclerView.Adapter<Test_AlarmAdapter.Bo
         }
     }
 }
-
