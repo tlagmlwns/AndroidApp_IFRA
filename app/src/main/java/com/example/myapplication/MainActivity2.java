@@ -41,6 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
         pw = findViewById(R.id.InputPassword);
         Login = findViewById(R.id.btn_login);
         Sign_up = findViewById(R.id.link3);
+
         Sign_up.setOnClickListener(new View.OnClickListener() {//회원가입
             @Override
             public void onClick(View view) {
@@ -48,7 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
                 startActivity(jtm);
             }
         });
-        Login.setOnClickListener(new View.OnClickListener() {//로그인시 메인페이지(임시)
+        Login.setOnClickListener(new View.OnClickListener() {//로그인시 메인페이지
             @Override
             public void onClick(View view) {
                 String uid = id.getText().toString();
@@ -79,7 +80,7 @@ public class MainActivity2 extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    public void url_request(String u_id,String u_pw){
+    public void url_request(String u_id,String u_pw){ //
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://15.164.120.162:5000/login?id=" + u_id + "&pw=" + u_pw,
@@ -88,11 +89,10 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            // JSON 데이터를 파싱하여 필요한 작업을 수행합니다.
+                            // JSON 데이터를 파싱하여 필요한 작업을 수행
                             String status = response.getString("status");
                             Log.e("response","state :"+status);
-                            if ("success".equals(status)) {
-                                // 로그인 성공 처리
+                            if ("success".equals(status)) { // 로그인 성공 처리
                                 Log.e("event","Login Success");
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 mydata.setUser_id(response.getString("user_id"));
@@ -110,19 +110,19 @@ public class MainActivity2 extends AppCompatActivity {
                                 if (userId.startsWith("m_zbs")) { //하나의 아이디로
                                     Intent manager = new Intent(getApplicationContext(), MainActivity5.class); //5:관리자
                                     startActivity(manager);
-                                    id.setText(""); //로그인시 입력칸 초기화
+                                    id.setText(""); //로그인시 로그인 화면의 입력칸 초기화
                                     pw.setText("");
                                 }
                                 else {
                                     Intent user = new Intent(getApplicationContext(), MainActivity4.class); //4:사용자
                                     startActivity(user);
-                                    id.setText(""); //로그인시 입력칸 초기화
+                                    id.setText(""); //로그인시 로그인 화면의 입력칸 초기화
                                     pw.setText("");
                                 }
                             } else {
                                 Log.e("event","Login Fail");
+                                //로그인 실패시 알림 토스트
                                 Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
-                                // 로그인 실패 처리
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -132,14 +132,14 @@ public class MainActivity2 extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // 요청이 실패한 경우 처리
+                        Log.e("event","server fail");
+                        // 서버가 열리지 않았을때 알림 토스트
                         Toast.makeText(getApplicationContext(), "통신 실패! 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     }
                 }
         );
-
-// Volley 요청 큐를 초기화하고 요청을 큐에 추가
+        // Volley 요청 큐를 초기화하고 요청을 큐에 추가
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(jsonObjectRequest);
     }
