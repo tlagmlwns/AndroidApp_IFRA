@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-public class Single_ton_data {
+public class Single_ton_data { //서버로 요청시 로그인동안 결과 저장하는 임시저장소
     private static Single_ton_data instance;
     private String sharedVariable;
     private String user_id;
