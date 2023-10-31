@@ -17,13 +17,12 @@ public class MainActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
 
-// 3초 뒤에 다음 화면으로 이동하는 Runnable을 실행
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() { // 몇초 뒤에 다음 화면으로 이동하는 Runnable을 실행
             @Override
             public void run() {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                 startActivity(intent);
             }
-        }, 3000); // 5초
+        }, 3000);
     }
 }
