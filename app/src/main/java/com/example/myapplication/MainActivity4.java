@@ -27,7 +27,7 @@ public class MainActivity4 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);//다크모드 삭제
-        setContentView(R.layout.activity_4_umain);
+        setContentView(R.layout.activity_4_user_main);
 
         um_Mypage = findViewById(R.id.ibtn_mypage);
         um_Logcheck = findViewById(R.id.btn_lcuser);
@@ -41,14 +41,14 @@ public class MainActivity4 extends AppCompatActivity {
                 startActivity(ummypage);
             }
         });
-        um_Logcheck.setOnClickListener(new View.OnClickListener() {
+        um_Logcheck.setOnClickListener(new View.OnClickListener() { //로그페이지 바로가기
             @Override
             public void onClick(View view) {
                 Intent logcheck=new Intent(getApplicationContext(), MainActivity7.class);
                 startActivity(logcheck);
             }
         });
-        Inquiry.setOnClickListener(new View.OnClickListener() {
+        Inquiry.setOnClickListener(new View.OnClickListener() { //문의 버튼
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity4.this);
