@@ -1,6 +1,5 @@
 package com.example.myapplication;
-
-public class All_Log {
+public class All_Log { //전체 로그 확인
     private String inner_time;
     private String outter_time;
     private String confidence;

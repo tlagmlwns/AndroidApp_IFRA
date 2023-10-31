@@ -23,8 +23,8 @@ public class All_LogAdapter extends RecyclerView.Adapter<All_LogAdapter.BoardVie
     @NonNull
     @Override
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //ViewHolder 객체 생성 후 리턴.
-        return new All_LogAdapter.BoardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_8_z_, parent, false));
+        return new All_LogAdapter.BoardViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.activity_8_manage_page_alllog, parent, false));//ViewHolder 객체 생성 후 리턴.
     }
 
     public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
