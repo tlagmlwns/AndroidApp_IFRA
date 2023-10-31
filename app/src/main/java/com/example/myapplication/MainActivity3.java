@@ -78,7 +78,8 @@ public class MainActivity3 extends AppCompatActivity {
 
         Random rand = new Random();
         int num = rand.nextInt(10000);
-        String snum = String.valueOf(num);
+        String snum = String.valueOf(num); //인증번호 랜덤값
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,13 +136,13 @@ public class MainActivity3 extends AppCompatActivity {
             public void onClick(View view) {
                 String Email_MJnum = em_pj.getText().toString();
                 if (Email_MJnum.equals(snum))
-                    {  Toast.makeText(MainActivity3.this, "이메일 인증 완료", Toast.LENGTH_SHORT).show();
-                        checkBox2.setChecked(true);}
+                {  Toast.makeText(MainActivity3.this, "이메일 인증 완료", Toast.LENGTH_SHORT).show();
+                    checkBox2.setChecked(true);}
                 else{  Toast.makeText(MainActivity3.this, "이메일 인증 실패", Toast.LENGTH_SHORT).show();
-                        checkBox2.setChecked(false);}
+                    checkBox2.setChecked(false);}
             }
         });
-        //얼굴사진카메라
+        //얼굴사진_카메라
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -173,7 +174,7 @@ public class MainActivity3 extends AppCompatActivity {
                     }
                 });
 
-        //ocr카메라
+        //ocr_카메라
         cer_cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -202,8 +203,7 @@ public class MainActivity3 extends AppCompatActivity {
                                 e.printStackTrace();
                                 Log.e("image storage", "Fail: " + e.getMessage());
                             }
-                            // 서버로 이미지를 업로드
-                            send2Server(internalFile);
+                            send2Server(internalFile); //서버로 이미지를 업로드
                             //information = ocr_result;
                             //showInfoDialog(MainActivity3.this, "정보 확인", information);
                         }
@@ -219,12 +219,12 @@ public class MainActivity3 extends AppCompatActivity {
     public void cer_takePicture() {
         Intent cer_takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cer_takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            showConfirmationDialog(MainActivity3.this, "부탁드립니다.", "현재 워터마크로 인하여 기술 부족으로 캡쳐시 배율을 높게하여 캡쳐하시기 바랍니다.");
+            showConfirmationDialog(MainActivity3.this, "부탁드립니다.", "현재 워터마크로 인하여 기술 부족으로 캡쳐시 배율(3x)을 높게하여 캡쳐하시기 바랍니다.");
         }
     }
     public void showInfoDialog(Context context, String name, String idNumber, String gender, String institution) { //v2
         LayoutInflater inflater = LayoutInflater.from(context);
-        View viewX1 = inflater.inflate(R.layout.activity_3_x1_dialogocrtext, null);
+        View viewX1 = inflater.inflate(R.layout.activity_3_x1_dialog_ocrtext, null);
         TextView tvName = viewX1.findViewById(R.id.tv_ocrresult_name);
         TextView tvIdNumber = viewX1.findViewById(R.id.tv_ocrresult_Num);
         TextView tvGender = viewX1.findViewById(R.id.tv_ocrresult_mw);
@@ -237,27 +237,20 @@ public class MainActivity3 extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder
-                .setView(viewX1) // 이 부분을 수정하여 커스텀 뷰를 설정합니다.
+                .setView(viewX1) //이부분을 수정하여 커스텀 뷰 설정
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 사용자가 확인 버튼을 눌렀을 때 수행할 동작을 여기에 추가
-                        Confirmation();
-                    }
+                    public void onClick(DialogInterface dialog, int which) {Confirmation();} //사용자가 확인 클릭시 확인 함수 실행
                 })
                 .setNeutralButton("수정", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Editing();
-                    }
+                    public void onClick(DialogInterface dialog, int which) {Editing();} //사용자가 수정 클릭시 수정 함수 실행
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Cancellation();
-                    }
+                    public void onClick(DialogInterface dialog, int which) {Cancellation();} //사용자가 취소 클릭시 취소 함수 실행
                 })
-                .show(); // 다이얼로그 표시
+                .show(); //다이얼로그 표시
     }
     public void showConfirmationDialog(Context context, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -270,15 +263,15 @@ public class MainActivity3 extends AppCompatActivity {
                         if (cer_takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
                             cer_cameraLauncher.launch(cer_takePictureIntent);
                         }
-                        dialog.dismiss(); // 다이얼로그를 닫습니다.
+                        dialog.dismiss(); //다이얼로그를 닫기
                     }
                 })
-                .show(); // 다이얼로그를 표시합니다.
+                .show(); //다이얼로그 표시
     }
     public void showEditableDialog(Context context, String edname, String edidNum, //v2
                                    String edgender, String edins, final OnValuesEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View viewX2 = inflater.inflate(R.layout.activity_3_x2_dialogedit, null);
+        View viewX2 = inflater.inflate(R.layout.activity_3_x2_dialog_edit, null);
         EditText etName = viewX2.findViewById(R.id.etv_ocrresult_name);
         EditText etIdNumber = viewX2.findViewById(R.id.etv_ocrresult_num);
         EditText etGender = viewX2.findViewById(R.id.etv_ocrresult_gender);
@@ -293,15 +286,13 @@ public class MainActivity3 extends AppCompatActivity {
         builder.setView(viewX2)
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 사용자가 수정한 값을 가져옵니다.
+                    public void onClick(DialogInterface dialog, int which) { //사용자가 수정한 값을 가져오기
                         name = etName.getText().toString();
                         idNumber = etIdNumber.getText().toString();
                         gender = etGender.getText().toString();
                         institution = etInstitution.getText().toString();
 
-                        // 리스너를 통해 수정된 값을 전달합니다.
-                        if (listener != null) {
+                        if (listener != null) { //listener를 통해 수정된 값을 전달
                             listener.onValues_Edited(name, idNumber, gender, institution);
                         }
                         Toast.makeText(context, "완료하였습니다.", Toast.LENGTH_SHORT).show();
@@ -313,11 +304,11 @@ public class MainActivity3 extends AppCompatActivity {
                         Toast.makeText(context, "취소하였습니다.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .show(); // 다이얼로그 표시
+                .show(); //다이얼로그 표시
     }
     public void showFinalDialog(Context context, String f_id, String f_pw, String f_name, String f_idNum, String f_pNum, String f_gender, String f_ins) { //v2
         LayoutInflater inflater = LayoutInflater.from(context);
-        View viewY1 = inflater.inflate(R.layout.activity_3_y1_final_dialogcheck, null);
+        View viewY1 = inflater.inflate(R.layout.activity_3_y1_dialog_final_check, null);
 
         TextView tvId = viewY1.findViewById(R.id.tv_final_result_ID);
         TextView tvPw = viewY1.findViewById(R.id.tv_final_result_PW);
@@ -337,7 +328,7 @@ public class MainActivity3 extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder
-                .setView(viewY1) // 이 부분을 수정하여 커스텀 뷰를 설정합니다.
+                .setView(viewY1) //이 부분을 수정하여 커스텀 뷰를 설정
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -356,11 +347,11 @@ public class MainActivity3 extends AppCompatActivity {
                         Cancellation();
                     }
                 })
-                .show(); // 다이얼로그 표시
+                .show(); //다이얼로그 표시
     }
     public void showEditable_FinalDialog(Context context, String F_id, String F_pw, String F_name, String F_idNum, String F_pNum, String F_gender, String F_ins, OnValuesFinalEditedListener listener) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View viewY2 = inflater.inflate(R.layout.activity_3_y2_final_dialogedit, null);
+        View viewY2 = inflater.inflate(R.layout.activity_3_y2_dialog_final_edit, null);
         EditText FE_Id = viewY2.findViewById(R.id.etv_final_result_ID); //최종 아이디
         EditText FE_Pw = viewY2.findViewById(R.id.etv_final_result_PW); //최종 비번
         EditText FE_Name = viewY2.findViewById(R.id.etv_final_result_name); //최종 이름
@@ -382,7 +373,6 @@ public class MainActivity3 extends AppCompatActivity {
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // 사용자가 수정한 값을 가져옵니다.
                         identify = FE_Id.getText().toString();
                         password = FE_Pw.getText().toString();
                         name = FE_Name.getText().toString();
@@ -391,10 +381,9 @@ public class MainActivity3 extends AppCompatActivity {
                         gender = FE_Gendaer.getText().toString();
                         institution = FE_Institution.getText().toString();
 
-                        // 리스너를 통해 수정된 값을 전달합니다.
                         if (listener != null) {
                             listener.onValues_FinalEdited(identify, password, name, idNumber, phone_num, gender, institution);
-                            Sign_in(user_face); //얼굴 사진 나중에 AI에서 비교
+                            Sign_in(user_face);
                             go_Login();
                         }
                     }
@@ -405,7 +394,7 @@ public class MainActivity3 extends AppCompatActivity {
                         Toast.makeText(context, "취소하였습니다.", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .show(); // 다이얼로그 표시
+                .show();
     }
     public interface OnValuesEditedListener {
         void onValues_Edited(String editedName, String editedIdNumber, String editedGender, String editedInstitution);
@@ -414,41 +403,38 @@ public class MainActivity3 extends AppCompatActivity {
         void onValues_FinalEdited(String fe_Id, String fe_Pw, String fe_Name, String fe_IdNum, String fe_Pnum, String fe_Gender, String fe_Ins);
     }
     private void Confirmation() {
-        // 안내문자서 확인 클릭시
-        // 예: 다음 화면으로 이동, 데이터 저장, 기타 작업 수행
+        //안내문자서 확인 클릭시
         Toast.makeText(getApplicationContext(), "완료하였습니다.", Toast.LENGTH_SHORT).show();
         checkBox.setChecked(true);
     }
     private void Cancellation() {
-        // 안내문자서 취소 클릭시
+        //안내문자서 취소 클릭시
         Toast.makeText(getApplicationContext(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
         checkBox.setChecked(false);
     }
     private void Editing() {
-        // 안내문자서 수정 클릭시
+        //안내문자서 수정 클릭시
         showEditableDialog(this, name, idNumber, gender, institution,
                 new OnValuesEditedListener() {
                     @Override
                     public void onValues_Edited(String editedName, String editedIdNumber, String editedGender, String editedInstitution) {
-                        // 사용자가 수정한 값을 사용
-                        // 이곳에서 수정된 값을 사용하거나 처리
-                        // editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
-                        // 예시로 수정된 이름을 Toast 메시지로 출력하는 예시:
+                        //사용자가 수정한 값을 사용
+                        //이곳에서 수정된 값을 사용하거나 처리
+                        //editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
                         Toast.makeText(MainActivity3.this, "수정완료 ", Toast.LENGTH_SHORT).show();
                         checkBox.setChecked(true);
                     }
                 });
     }
     private void final_Editing() {
-        // 안내문자서 수정 클릭시
+        //안내문자서 수정 클릭시
         showEditable_FinalDialog(this, identify, password, name, idNumber, phone_num, gender, institution,
                 new OnValuesFinalEditedListener() {
                     @Override
                     public void onValues_FinalEdited( String fe_Id, String fe_Pw, String fe_Name, String fe_IdNum, String fe_Pnum, String fe_Gender, String fe_Ins) {
-                        // 사용자가 수정한 값을 사용
-                        // 이곳에서 수정된 값을 사용하거나 처리
-                        // editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
-                        // 예시로 수정된 이름을 Toast 메시지로 출력하는 예시:
+                        //사용자가 수정한 값을 사용
+                        //이곳에서 수정된 값을 사용하거나 처리
+                        //editedName: 수정된 이름, editedIdNumber: 수정된 주민번호, editedGender: 수정된 성별, editedInstitution: 수정된 인증기관
                         Toast.makeText(MainActivity3.this, "가입완료 ", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -457,7 +443,7 @@ public class MainActivity3 extends AppCompatActivity {
         Intent login = new Intent(getApplicationContext(), MainActivity2.class);
         startActivity(login);
     }
-    public void send2Server(File file) { // 서버로 보내기
+    public void send2Server(File file) { //서버로 보내기
         MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -482,9 +468,8 @@ public class MainActivity3 extends AppCompatActivity {
                     String responseBody = response.body().string();
 
                     try {
-                        JSONObject json = new JSONObject(responseBody);
+                        JSONObject json = new JSONObject(responseBody); //여기에서 JSON 데이터를 처리하고 원하는 정보 추출
 
-                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
                         String status = json.getString("status");
                         String result = json.getString("result");
 
@@ -493,10 +478,7 @@ public class MainActivity3 extends AppCompatActivity {
                         ocr_result = result;
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {
-                                filteringData(ocr_result); //데이터 필터링
-                                //showInfoDialog(MainActivity3.this,ocr_result);
-                            }
+                            public void run() { filteringData(ocr_result);} //데이터 필터링
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -505,11 +487,12 @@ public class MainActivity3 extends AppCompatActivity {
                 } else {
                     // 응답이 성공적이지 않은 경우에 대한 처리
                     Log.e("Response Error", "Response Code: " + response.code());
+                    Toast.makeText(getApplicationContext(), "서버 응답이 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    public void filteringData(String result){
+    public void filteringData(String result){ //데이터필터링(서버에서 받은 결과 가공)
         //String ocrResult = "주민등록증\n홍길동(빠좀께)\n800101-2345678\n세울특별시 가산디지털1로\n서울특별시 금천구청장";
         String ocrResult = result;
 
@@ -543,7 +526,8 @@ public class MainActivity3 extends AppCompatActivity {
         }
         else {showInfoDialog(this, name, idNumber, gender, institution);}
     }
-    public void Sign_in(File file) { // 서버로 보내기
+
+    public void Sign_in(File file) { //회원등록(서버로 보내기)
         MediaType MEDIA_TYPE = MediaType.parse("image/jpeg");
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -576,7 +560,7 @@ public class MainActivity3 extends AppCompatActivity {
                     try {
                         JSONObject json = new JSONObject(responseBody);
 
-                        // 여기에서 JSON 데이터를 처리하고 원하는 정보 추출
+                        //여기에서 JSON 데이터를 처리하고 원하는 정보 추출
                         String status = json.getString("status");
 
                         Log.d("JSON Response: ", "status: " + status);
@@ -598,7 +582,7 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
     }
-    public void check_id(String id) { // 서버로 보내기
+    public void check_id(String id) { //아이디 중복 확인(서버로 확인)
         Log.e("test",id);
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -655,7 +639,7 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
     }
-    public void add_sms(String mail,String num){
+    public void add_sms(String mail,String num){ //인증문자
         new MailSender().sendEmail(mail, num);
     }
 }
