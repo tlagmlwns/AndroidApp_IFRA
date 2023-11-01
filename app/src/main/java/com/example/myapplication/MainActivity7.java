@@ -57,7 +57,10 @@ public class MainActivity7 extends AppCompatActivity {
         //-------------------------------------------------
         calendarview = findViewById(R.id.calendarView);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2023, 9, 1);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(year, month, day);
         long millis = calendar.getTimeInMillis();
         calendarview.setDate(millis);
         S_Date = findViewById(R.id.tv_LselectDate_result);
